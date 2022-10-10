@@ -1,0 +1,25 @@
+services:
+  ai_server:
+    image: tensorflow/tensorflow:devel-gpu
+
+    container_name: ai_server
+
+    build:
+      context: .
+      dockerfile: dockerfile_server
+
+    volumes:
+      - .:/app
+
+
+  ai_client:
+    image: python:3.8-bullseye
+
+    container_name: ai_client
+
+    build:
+      context: .
+      dockerfile: dockerfile_client
+
+    volumes:
+      - .:/app
