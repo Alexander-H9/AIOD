@@ -1,0 +1,23 @@
+# https://hub.docker.com/_/eclipse-mosquitto
+# https://github.com/eclipse/mosquitto
+FROM eclipse-mosquitto:2.0.15
+
+RUN apk update && apk upgrade
+RUN apk add bash
+
+# falls python installation gewünscht:
+RUN apk add --no-cache python3 py3-pip
+RUN pip install paho-mqtt 
+
+CMD ["sleep", "infinity"]
+
+
+# start broker:     
+# mosquitto
+
+# subscribe to a topic:
+# mosquitto_sub -t 'test/topic' -v
+# mosquitto_sub -h 127.0.0.1 -p 1883 -t test/topic -v
+
+# pubish a messasge:
+# mosquitto_pub -t 'test/topic' -m 'hello world'

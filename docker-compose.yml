@@ -11,6 +11,9 @@ services:
     volumes:
       - .:/app
 
+    ports:
+      - 1881:1883
+
 
   ai_client:
     image: python:3.8-bullseye
@@ -23,3 +26,22 @@ services:
 
     volumes:
       - .:/app
+
+    ports:
+      - 1882:1883
+
+
+  mqtt_broker:
+    image: eclipse-mosquitto:2.0.15
+
+    container_name: mqtt_broker
+
+    build:
+      context: .
+      dockerfile: dockerfile_broker
+
+    volumes:
+      - .:/app
+
+    ports:
+      - 1883:1883
