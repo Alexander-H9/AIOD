@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt
 import sys
+from object_detection import get_picture_as_bytearray
 
 # MQTT Publusher
 
@@ -21,11 +22,12 @@ client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 
-if client.connect("localhost", 1883, 60) != 0:
+if client.connect("172.19.0.4", 1883, 60) != 0:
     print("Could not connect to MQTT Broker!")
     sys.exit(-1)
 
 
-client.publish("test/topic", "Hello", 0)
+client.publish("test/topic", "Hello, the following file will be an .jpg image as bytearray", 0)
+client.publish("test/topic", get_picture_as_bytearray())
 
 client.disconnect()

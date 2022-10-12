@@ -1,8 +1,10 @@
-FROM tensorflow/tensorflow:devel-gpu  
+# FROM tensorflow/tensorflow:devel-gpu
+FROM tensorflow/tensorflow:latest     
 
 RUN pip install --upgrade pip && pip install \
-    paho-mqtt \
-    tensorflow
+    pillow \
+    paho-mqtt 
+    #tensorflow
 
 WORKDIR /app
 

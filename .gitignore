@@ -9,6 +9,10 @@ __pycache__/
 # Folders
 media
 models
+data
+log
+
+passwd
 
 # Distribution / packaging
 .Python
