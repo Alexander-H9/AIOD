@@ -3,7 +3,9 @@ FROM tensorflow/tensorflow:latest
 
 RUN pip install --upgrade pip && pip install \
     pillow \
-    paho-mqtt 
+    paho-mqtt \
+    pydantic \
+    PyYAML
     #tensorflow
 
 WORKDIR /app

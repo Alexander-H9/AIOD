@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import sys
-from tensorflow.keras.preprocessing import image
+
+from config import settings
 
 # MQTT Subscriber
 
@@ -33,17 +34,17 @@ client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 
-if client.connect("172.19.0.4") != 0:        #)1883, 60
+if client.connect("172.19.0.2") != 0:        #)1883, 60
     print("Could not connect to MQTT Broker!")
     sys.exit(-1)
 
 
-#try:
-print("Press CTRL + C to exit...")
-client.loop_forever()
-    # client.loop_end()
-#except:
-print("Disconnecting from broker")
+try:
+    print("Press CTRL + C to exit...")
+    client.loop_forever()
+        # client.loop_end()
+except:
+    print("Disconnecting from broker")
 
 client.disconnect()
 

@@ -1,7 +1,9 @@
 FROM python:3.8-bullseye
 
 RUN pip install --upgrade pip && pip install \
-    paho-mqtt 
+    paho-mqtt \
+    pydantic \
+    PyYAML
 
 WORKDIR /app
 

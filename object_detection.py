@@ -8,11 +8,11 @@ import pathlib
 
 def run():
 
-    model_dir = pathlib.Path('models/ResNet50.h5')
+    model_dir = pathlib.Path('models/ResNet50')
     
     if not model_dir.exists():
         model = ResNet50(weights='imagenet')
-        model.save(os.path.join('models', 'ResNet50.h5'))
+        model.save(os.path.join('models', 'ResNet50'))
     else:
          model = keras.models.load_model(model_dir)
 
@@ -41,4 +41,4 @@ def get_picture_as_bytearray():
 
 # get_picture_as_bytearray()
 
-run()
+# run()

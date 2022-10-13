@@ -1,7 +1,7 @@
-version: '2'
+version: '3'
 services:
   ai_server:
-    image: tensorflow/tensorflow:devel-gpu
+    image: tensorflow/tensorflow:latest
 
     container_name: ai_server
 
