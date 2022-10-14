@@ -7,8 +7,9 @@ RUN apk add bash
 
 # falls python installation gewünscht:
 RUN apk add --no-cache python3 py3-pip
-RUN pip install paho-mqtt 
-RUN pip install pydantic \
+RUN pip install \
+  paho-mqtt \
+  pydantic \
   PyYAML
 
 CMD ["/usr/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]

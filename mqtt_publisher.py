@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 import sys
 
-from object_detection import get_picture_as_bytearray
+from server.object_detection import get_picture_as_bytearray
 from config import settings
 
 # MQTT Publusher
@@ -27,7 +27,7 @@ client.on_message = on_message
 print(settings.adress.broker)
 
 
-if client.connect("172.19.0.4", 1883, 60) != 0: 
+if client.connect("172.19.0.2", 1883, 60) != 0: 
     print("Could not connect to MQTT Broker!")
     sys.exit(-1)
 

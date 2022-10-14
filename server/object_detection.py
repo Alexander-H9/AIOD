@@ -6,17 +6,22 @@ from tensorflow import keras
 import numpy as np
 import pathlib
 
+
 def run():
 
-    model_dir = pathlib.Path('models/ResNet50')
+    model_dir = pathlib.Path('server/models/ResNet50')
     
     if not model_dir.exists():
         model = ResNet50(weights='imagenet')
+        model.compile()
         model.save(os.path.join('models', 'ResNet50'))
     else:
          model = keras.models.load_model(model_dir)
+         model.compile()
 
-    img_path = os.path.join('media', 'basketball1.jpg')
+
+
+    img_path = os.path.join('server', 'media', 'output.jpg')
 
     img = image.load_img(img_path, target_size=(224, 224))
     x = image.img_to_array(img)
@@ -25,11 +30,13 @@ def run():
 
     preds = model.predict(x)
 
-    print('Predicted:', decode_predictions(preds, top=3)[0])
+    # print('Predicted:', decode_predictions(preds, top=3)[0])
+
+    return(decode_predictions(preds, top=1)[0])
 
 
 def get_picture_as_bytearray():
-    img_path = os.path.join('media', 'basketball1.jpg')
+    img_path = os.path.join('server', 'media', 'b1.jpg')
 
     with open(img_path, "rb") as f:
         fileContent = f.read()
@@ -41,4 +48,4 @@ def get_picture_as_bytearray():
 
 # get_picture_as_bytearray()
 
-# run()
+run()
