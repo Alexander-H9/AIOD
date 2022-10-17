@@ -7,9 +7,9 @@ import numpy as np
 import pathlib
 
 
-def run():
+def init_obj_det():
 
-    model_dir = pathlib.Path('server/models/ResNet50')
+    model_dir = pathlib.Path('models/ResNet50')
     
     if not model_dir.exists():
         model = ResNet50(weights='imagenet')
@@ -19,9 +19,12 @@ def run():
          model = keras.models.load_model(model_dir)
          model.compile()
 
+    return model
 
 
-    img_path = os.path.join('server', 'media', 'output.jpg')
+def obj_det(model):
+
+    img_path = os.path.join('media', 'output.jpg')
 
     img = image.load_img(img_path, target_size=(224, 224))
     x = image.img_to_array(img)
@@ -36,7 +39,7 @@ def run():
 
 
 def get_picture_as_bytearray():
-    img_path = os.path.join('server', 'media', 'b1.jpg')
+    img_path = os.path.join('media', 'b1.jpg')
 
     with open(img_path, "rb") as f:
         fileContent = f.read()
@@ -48,4 +51,4 @@ def get_picture_as_bytearray():
 
 # get_picture_as_bytearray()
 
-run()
+# run()

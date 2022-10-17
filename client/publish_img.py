@@ -11,7 +11,7 @@ def on_connect(client, userdata, flags, rc):
 
 
 def get_picture_as_bytearray():
-    img_path = os.path.join('server', 'media', 'basketball1.jpg')
+    img_path = os.path.join('../','server', 'media', 'basketball1.jpg')
 
     with open(img_path, "rb") as f:
         fileContent = f.read()
