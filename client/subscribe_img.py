@@ -1,15 +1,23 @@
 import paho.mqtt.client as mqtt
 import sys
+import argparse
 
 # from config import settings
 
 # MQTT Subscriber
 
 
+parser = argparse.ArgumentParser()
+parser.add_argument('-p', dest='port', help='specify target host', required=False, type=int)
+args = parser.parse_args()
+port = args.port
+if port == None or port > 9 or port < 0: port = 1
+
+
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
 
-    client.subscribe("rec_result/topic")
+    client.subscribe(f"rec_result/{port}/topic")
     print("Connected to topic rec_result")
 
 

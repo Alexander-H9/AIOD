@@ -13,15 +13,20 @@ from config import settings
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
     client.subscribe("send_img/topic")
-    print("Listening to topic: send_img/topic")
+
+    for port in range(1,10,1):
+        client.subscribe(f"send_img/{port}/topic")
+
+    print("Listening to topic: send_img/topic...")
 
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     print(msg.topic)
+    port = msg.topic.split("/")[1]
     receive(msg)
     res = obj_det(model)
-    client.publish("rec_result/topic", str(res))
+    client.publish(f'rec_result/{port}/topic', str(res))
 
 
 def receive(msg):
