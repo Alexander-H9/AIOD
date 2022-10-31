@@ -1,6 +1,8 @@
 import paho.mqtt.client as mqtt
 import sys
 import os
+import argparse
+
 # for imports from parent dir
 current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
@@ -9,9 +11,25 @@ sys.path.append(parent)
 from object_detection import obj_det, init_obj_det
 from config import settings
 
+parser = argparse.ArgumentParser()
+parser.add_argument('-u', dest='username', help='specify client username', required=False, type=str)
+parser.add_argument('-pw', dest='password', help='specify client password', required=False, type=str)
+args = parser.parse_args()
+username = args.username
+password = args.password
+
+if username == None: username = "server"
+if password == None: password = "server_pw"
+
 
 def on_connect(client, userdata, flags, rc):
+
+    if rc == 5: 
+        print("Authentication error")
+        exit()
+
     print("Connected with result code "+str(rc))
+
     client.subscribe("send_img/topic")
 
     for port in range(1,10,1):
@@ -45,7 +63,9 @@ model = init_obj_det()
 print(settings.adress.client)
 print(settings.adress.broker)
 
-if client.connect("172.19.0.2") != 0:         # "172.19.0.2" , 1883, 60
+client.username_pw_set(username=username, password=password)
+
+if client.connect("172.19.0.4") != 0:         # "172.19.0.2" , 1883, 60
     print("Could not connect to MQTT Broker!")
     sys.exit(-1)
 

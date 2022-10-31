@@ -6,16 +6,31 @@ import argparse
 
 # MQTT Subscriber
 
+# password authentiacation: http://www.steves-internet-guide.com/mqtt-username-password-example/
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', dest='port', help='specify target host', required=False, type=int)
+parser.add_argument('-u', dest='username', help='specify client username', required=False, type=str)
+parser.add_argument('-pw', dest='password', help='specify client password', required=False, type=str)
 args = parser.parse_args()
 port = args.port
+username = args.username
+password = args.password
+
 if port == None or port > 9 or port < 0: port = 1
+if username == None: username = "alex"
+if password == None: password = "aaap"
 
 
 def on_connect(client, userdata, flags, rc):
+
+    if rc == 5: 
+        print("Authentication error")
+        exit()
+
     print("Connected with result code "+str(rc))
+    print(userdata)
+    
 
     client.subscribe(f"rec_result/{port}/topic")
     print("Connected to topic rec_result")
@@ -44,7 +59,9 @@ client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 
-if client.connect("172.19.0.2") != 0:        #)1883, 60
+client.username_pw_set(username=username, password=password)
+
+if client.connect("172.19.0.4") != 0:        #)1883, 60
     print("Could not connect to MQTT Broker!")
     sys.exit(-1)
 
