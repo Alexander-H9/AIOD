@@ -1,12 +1,17 @@
 # FROM tensorflow/tensorflow:devel-gpu
 FROM tensorflow/tensorflow:latest     
 
+# cv2 dependencies
+RUN apt-get update
+RUN apt-get install ffmpeg libsm6 libxext6  -y
+
 RUN pip install --upgrade pip && pip install \
     pillow \
     paho-mqtt \
     pydantic \
-    PyYAML
-    #tensorflow
+    PyYAML \
+    matplotlib \
+    opencv-python
 
 WORKDIR /app
 

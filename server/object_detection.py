@@ -9,7 +9,7 @@ import pathlib
 
 def init_obj_det():
 
-    model_dir = pathlib.Path('models/ResNet50')
+    model_dir = pathlib.Path('/app/server/models/ResNet50')
     
     if not model_dir.exists():
         model = ResNet50(weights='imagenet')
