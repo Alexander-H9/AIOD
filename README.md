@@ -23,6 +23,14 @@ AI service for application independant image/video processing and analysis.
 ```
 docker compose up
 ```
+* Status of all docker containers.
+```
+docker container ls
+```
+* Open bash of specific docker container
+```
+docker exec -ti "name" bash
+```
 * Stops containers and removes containers, networks, volumes, and images created by up.
 ```
 docker compose down
