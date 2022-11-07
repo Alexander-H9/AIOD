@@ -54,25 +54,27 @@ def receive(msg):
     
 
 
-client = mqtt.Client()
-client.on_connect = on_connect
-client.on_message = on_message
+if __name__ == '__main__':
 
-model = init_obj_det()
+    client = mqtt.Client()
+    client.on_connect = on_connect
+    client.on_message = on_message
 
-print(settings.adress.client)
-print(settings.adress.broker)
+    model = init_obj_det()
 
-client.username_pw_set(username=username, password=password)
+    print(settings.adress.client)
+    print(settings.adress.broker)
 
-if client.connect("172.19.0.4") != 0:         # "172.19.0.2" , 1883, 60
-    print("Could not connect to MQTT Broker!")
-    sys.exit(-1)
+    client.username_pw_set(username=username, password=password)
 
-#try:
-print("Press CTRL + C to exit...")
-client.loop_forever()
-#except:
-print("Disconnecting from broker")
+    if client.connect("172.19.0.4") != 0:         # "172.19.0.2" , 1883, 60
+        print("Could not connect to MQTT Broker!")
+        sys.exit(-1)
 
-client.disconnect()
+    #try:
+    print("Press CTRL + C to exit...")
+    client.loop_forever()
+    #except:
+    print("Disconnecting from broker")
+
+    client.disconnect()
