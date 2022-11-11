@@ -1,8 +1,14 @@
 import paho.mqtt.client as mqtt
 import sys
 import argparse
+import os
 
-# from config import settings
+# for imports from parent dir
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
+from config import settings
+from gui_interface import authentication
 
 # MQTT Subscriber
 
@@ -26,14 +32,14 @@ def on_connect(client, userdata, flags, rc):
 
     if rc == 5: 
         print("Authentication error")
+        authentication(False)
         exit()
 
-    print("Connected with result code "+str(rc))
-    print(userdata)
-    
 
+    print("Connected with result code "+str(rc))
     client.subscribe(f"rec_result/{port}/topic")
-    print("Connected to topic rec_result")
+    print(f"Connected to topic rec_result/{port}")
+    authentication(True)
 
 
 # The callback for when a PUBLISH message is received from the server.
@@ -61,7 +67,7 @@ client.on_message = on_message
 
 client.username_pw_set(username=username, password=password)
 
-if client.connect("172.19.0.4") != 0:        #)1883, 60
+if client.connect(settings.adress.broker) != 0:        #)1883, 60
     print("Could not connect to MQTT Broker!")
     sys.exit(-1)
 
@@ -69,6 +75,7 @@ if client.connect("172.19.0.4") != 0:        #)1883, 60
 #try:
 print("Press CTRL + C to exit...")
 client.loop_forever()
+
     # client.loop_end()
 #except:
 print("Disconnecting from broker")

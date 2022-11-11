@@ -50,15 +50,10 @@ client.on_connect = on_connect
 
 client.username_pw_set(username=username, password=password)
 
-if client.connect("172.19.0.1", 1883, 60) != 0: 
+if client.connect(settings.adress.broker, 1883, 60) != 0: 
     print("Could not connect to MQTT Broker!")
     sys.exit(-1)
 
 client.publish(f"send_img/{port}/topic", get_picture_as_bytearray())
 
-
-print(f'Client adress: {settings.adress.client}')
-print(f'Broker adress: {settings.adress.broker}')
-
 client.disconnect()
-

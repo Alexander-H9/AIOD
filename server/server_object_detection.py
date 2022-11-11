@@ -40,8 +40,8 @@ def on_connect(client, userdata, flags, rc):
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-    print(msg.topic)
     port = msg.topic.split("/")[1]
+    print(f"topic: {msg.topic}, port: {port}" )
     receive(msg)
     res = obj_det(model)
     client.publish(f'rec_result/{port}/topic', str(res))
@@ -62,12 +62,9 @@ if __name__ == '__main__':
 
     model = init_obj_det()
 
-    print(settings.adress.client)
-    print(settings.adress.broker)
-
     client.username_pw_set(username=username, password=password)
 
-    if client.connect("172.19.0.4") != 0:         # "172.19.0.2" , 1883, 60
+    if client.connect(settings.adress.broker) != 0:         # "172.19.0.2" , 1883, 60
         print("Could not connect to MQTT Broker!")
         sys.exit(-1)
 

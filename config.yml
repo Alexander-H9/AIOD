@@ -1,4 +1,5 @@
 adress:
-  broker: http://mqtt_broker:1883
+  # broker: http://mqtt_broker:1883
+  broker: 172.19.0.2
   server: http://ai_server
   client: http://ai_client
