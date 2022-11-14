@@ -1,0 +1,7 @@
+# non executable
+pyuic5 main.ui -o ui_build.py
+
+or
+# make executable
+pyuic5 -x dlg_login.ui -o dlg_login.py
+pyuic5 -x mw_aiod.ui -o mw_aiod.py
