@@ -30,6 +30,7 @@ services:
 
     volumes:
       - .:/app
+      - .:/tmp/.X11-unix:/tmp/.X11-unix
 
     # ports:
     #   - 1882:1882

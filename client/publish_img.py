@@ -22,7 +22,7 @@ password = args.password
 
 if port == None or port > 9 or port < 0: port = 1
 if username == None: username = "alex"  # andreas
-if password == None: password = "aaap"  # maekathon2022
+if password == None: password = "aaap"  # makeathon2022
 # add new user password from passwd file: mosquitto_passwd -U passwd
 
 
