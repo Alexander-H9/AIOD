@@ -14,8 +14,10 @@ AI service for application independant image/video processing and analysis.
 
 * Python 3
 * Docker
-* MQTT
+* MQTT (moquitto, paho-mqtt)
 * Tensorflow
+* PyQt5
+* OpenCV
 
 ### Executing program
 
@@ -34,6 +36,10 @@ docker exec -ti "name" bash
 * Stops containers and removes containers, networks, volumes, and images created by up.
 ```
 docker compose down
+```
+* Build all docker images, update dependencies
+```
+docker compose build
 ```
 
 ## Authors
