@@ -44,16 +44,16 @@ def get_picture_as_bytearray():
     byteArr = bytearray(fileContent)
     return byteArr
 
+if __name__ == "__main__":
+    client = mqtt.Client()
+    client.on_connect = on_connect
 
-client = mqtt.Client()
-client.on_connect = on_connect
+    client.username_pw_set(username=username, password=password)
 
-client.username_pw_set(username=username, password=password)
+    if client.connect("127.0.0.1", 1883, 60) != 0: 
+        print("Could not connect to MQTT Broker!")
+        sys.exit(-1)
 
-if client.connect("127.0.0.1", 1883, 60) != 0: 
-    print("Could not connect to MQTT Broker!")
-    sys.exit(-1)
+    client.publish(f"send_img/{port}/topic", get_picture_as_bytearray())
 
-client.publish(f"send_img/{port}/topic", get_picture_as_bytearray())
-
-client.disconnect()
+    client.disconnect()

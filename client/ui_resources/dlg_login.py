@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'dlg_login.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.12.3
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -63,13 +65,6 @@ class Ui_Dialog(object):
         self.label_logo.setGeometry(QtCore.QRect(120, 60, 120, 120))
         self.label_logo.setScaledContents(True)
         self.label_logo.setObjectName("label_logo")
-        self.pb_close = QtWidgets.QPushButton(Dialog)
-        self.pb_close.setGeometry(QtCore.QRect(320, 0, 40, 30))
-        self.pb_close.setStyleSheet("border: 1px solid #999999;\n"
-"font: 20px;\n"
-"color: #ffffff;\n"
-"border-radius: 3px;")
-        self.pb_close.setObjectName("pb_close")
         self.pb_eyes = QtWidgets.QPushButton(Dialog)
         self.pb_eyes.setGeometry(QtCore.QRect(300, 350, 30, 30))
         self.pb_eyes.setStyleSheet("color: white;")
@@ -77,29 +72,34 @@ class Ui_Dialog(object):
         self.pb_eyes.setObjectName("pb_eyes")
         self.label_invalid_user = QtWidgets.QLabel(Dialog)
         self.label_invalid_user.setEnabled(True)
-        self.label_invalid_user.setGeometry(QtCore.QRect(90, 290, 240, 16))
+        self.label_invalid_user.setGeometry(QtCore.QRect(90, 290, 240, 15))
         self.label_invalid_user.setStyleSheet("font: 12px;\n"
 "color: #f50537;")
+        self.label_invalid_user.setText("")
         self.label_invalid_user.setObjectName("label_invalid_user")
         self.label_invalid_pw = QtWidgets.QLabel(Dialog)
-        self.label_invalid_pw.setGeometry(QtCore.QRect(90, 410, 240, 16))
+        self.label_invalid_pw.setGeometry(QtCore.QRect(90, 410, 240, 15))
         self.label_invalid_pw.setStyleSheet("font: 12px;\n"
 "color: #f50537;")
+        self.label_invalid_pw.setText("")
         self.label_invalid_pw.setObjectName("label_invalid_pw")
+        self.label_invalid_login = QtWidgets.QLabel(Dialog)
+        self.label_invalid_login.setGeometry(QtCore.QRect(30, 530, 300, 15))
+        self.label_invalid_login.setStyleSheet("font: 12px;\n"
+"color: #f50537;")
+        self.label_invalid_login.setText("")
+        self.label_invalid_login.setObjectName("label_invalid_login")
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Login"))
+        Dialog.setWindowTitle(_translate("Dialog", "AIOD - Login"))
         self.le_user.setPlaceholderText(_translate("Dialog", "User"))
         self.le_pw.setPlaceholderText(_translate("Dialog", "Password"))
         self.pb_submit.setText(_translate("Dialog", "Sign In"))
         self.label_logo.setText(_translate("Dialog", "TextLabel"))
-        self.pb_close.setText(_translate("Dialog", "X"))
-        self.label_invalid_user.setText(_translate("Dialog", "Invalid user"))
-        self.label_invalid_pw.setText(_translate("Dialog", "Invalid entry"))
 
 
 if __name__ == "__main__":
@@ -110,4 +110,3 @@ if __name__ == "__main__":
     ui.setupUi(Dialog)
     Dialog.show()
     sys.exit(app.exec_())
-

@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'mw_aiod.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.12.3
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -47,20 +49,6 @@ class Ui_MainWindow(object):
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
-        self.pb_close = QtWidgets.QPushButton(self.centralwidget)
-        self.pb_close.setGeometry(QtCore.QRect(680, 0, 40, 30))
-        self.pb_close.setStyleSheet("border: 1px solid #999999;\n"
-"font: 20px;\n"
-"color: #ffffff;\n"
-"border-radius: 3px;")
-        self.pb_close.setObjectName("pb_close")
-        self.pb_minimize = QtWidgets.QPushButton(self.centralwidget)
-        self.pb_minimize.setGeometry(QtCore.QRect(640, 0, 40, 30))
-        self.pb_minimize.setStyleSheet("border: 1px solid #999999;\n"
-"font: 30px;\n"
-"color: #ffffff;\n"
-"border-radius: 3px;")
-        self.pb_minimize.setObjectName("pb_minimize")
         self.line = QtWidgets.QFrame(self.centralwidget)
         self.line.setGeometry(QtCore.QRect(0, 410, 720, 2))
         self.line.setStyleSheet("border: 5px solid #666666;")
@@ -75,15 +63,13 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "AIOD"))
         self.pb_upload.setText(_translate("MainWindow", "Upload"))
         self.pb_select.setText(_translate("MainWindow", "Select file"))
         self.label.setText(_translate("MainWindow", "Filename.jpg"))
         self.label_2.setText(_translate("MainWindow", "99% Objekt"))
         self.comboBox.setItemText(0, _translate("MainWindow", "Objekterkennung"))
         self.comboBox.setItemText(1, _translate("MainWindow", "Texterkennung"))
-        self.pb_close.setText(_translate("MainWindow", "X"))
-        self.pb_minimize.setText(_translate("MainWindow", "-"))
 
 
 if __name__ == "__main__":
@@ -94,4 +80,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-

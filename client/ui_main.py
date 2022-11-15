@@ -42,7 +42,10 @@ class UI_LogIn(QDialog):
         # Run the .setupUi() method to show the GUI
         self.ui.setupUi(self)
 
-        self.setWindowFlags(Qt.FramelessWindowHint)
+        # self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setWindowFlags(self.windowFlags()
+                    ^ Qt.WindowContextHelpButtonHint)
+
         self.show_pw = False
 
         self.ui.label_invalid_user.hide()
@@ -78,8 +81,6 @@ class UI_LogIn(QDialog):
         Last changed: 16.10.2022, AF
             created
         """
-        self.ui.pb_close.clicked.connect(self.close)
-
         self.ui.pb_eyes.clicked.connect(self.showPassword)
         self.ui.pb_submit.clicked.connect(self.submitCredentials)
     
@@ -112,30 +113,44 @@ class UI_LogIn(QDialog):
         Last changed: 16.10.2022, AF
             created
         """
+        flag = True
+        self.ui.label_invalid_login.hide()
+
+        # get text input
         user = str(self.ui.le_user.text())
         pw = str(self.ui.le_pw.text())
 
-        client.username_pw_set(username=user, password=pw)
-
-        if client.connect("127.0.0.1", 1883, 60) != 0: 
-            print("Could not connect to MQTT Broker!")
-            sys.exit(-1)
-
-        
+        # check for wrong input text
         if user == "" or any(map(lambda x: x in user, SPECIAL_CHARACTERS)):
+            self.ui.label_invalid_user.setText("Invalid user")
             self.ui.label_invalid_user.show()
-            return
+            flag = False
+        else:
+            self.ui.label_invalid_user.hide()
 
         if pw == "":
+            self.ui.label_invalid_pw.setText("Invalid entry")
             self.ui.label_invalid_pw.show()
-            return
+            flag = False
+        else:
+            self.ui.label_invalid_pw.hide()
+
+        # init client credentials
+        client.username_pw_set(username=user, password=pw)
+
+        # connect client to broker
+        try:
+            if client.connect("127.0.0.1", 1883, 60) != 0: 
+                flag = False
+        except:
+            self.ui.label_invalid_login.setText("Unable to connect")
+            flag = False
         
-        suc = True
-        # do stuff
-        if suc:
+        # check for errors
+        if flag:
             self.accept()
         else:
-            self.close()
+            self.ui.label_invalid_login.show()
 
 class UI_Main:
     def __init__(self):
@@ -147,7 +162,9 @@ class UI_Main:
         self.ui = mw_aiod.Ui_MainWindow() # load ui in window
         self.ui.setupUi(self.mainwindow) # setup ui
 
-        self.mainwindow.setWindowFlags(Qt.FramelessWindowHint)
+        self.mainwindow.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint) # disable maximize button
+
+        self.app.aboutToQuit.connect(self.exitWindow) # run function before closing
 
         # setup gui and windows
         self.setStyle() # set style
@@ -188,9 +205,6 @@ class UI_Main:
         Last changed: 16.10.2022, AF
             created
         """
-        self.ui.pb_close.clicked.connect(self.mainwindow.close)
-        self.ui.pb_minimize.clicked.connect(self.mainwindow.showMinimized)
-
         self.ui.pb_select.clicked.connect(self.selectFile)
     
     def selectFile(self):
@@ -217,6 +231,18 @@ class UI_Main:
         """
         self.mainwindow.show() # display window with ui
         sys.exit(self.app.exec_())
+    
+    def exitWindow(self):
+        """execute before closing via red x-button
+
+        Args:
+            -
+        Returns:
+            -
+        Last changed: 15.11.2022, AF
+            created
+        """
+        sys.exit(0)
     
 if __name__ == "__main__":
     ui_main = UI_Main()

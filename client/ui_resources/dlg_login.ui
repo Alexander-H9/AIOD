@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Login</string>
+   <string>AIOD - Login</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: #000000;</string>
@@ -166,25 +166,6 @@ border-radius: 3px;</string>
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="pb_close">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>0</y>
-     <width>40</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border: 1px solid #999999;
-font: 20px;
-color: #ffffff;
-border-radius: 3px;</string>
-   </property>
-   <property name="text">
-    <string>X</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pb_eyes">
    <property name="geometry">
     <rect>
@@ -210,7 +191,7 @@ border-radius: 3px;</string>
      <x>90</x>
      <y>290</y>
      <width>240</width>
-     <height>16</height>
+     <height>15</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -218,7 +199,7 @@ border-radius: 3px;</string>
 color: #f50537;</string>
    </property>
    <property name="text">
-    <string>Invalid user</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="label_invalid_pw">
@@ -227,7 +208,7 @@ color: #f50537;</string>
      <x>90</x>
      <y>410</y>
      <width>240</width>
-     <height>16</height>
+     <height>15</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -235,7 +216,24 @@ color: #f50537;</string>
 color: #f50537;</string>
    </property>
    <property name="text">
-    <string>Invalid entry</string>
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_invalid_login">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>530</y>
+     <width>300</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 12px;
+color: #f50537;</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>
