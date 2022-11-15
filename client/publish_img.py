@@ -36,7 +36,7 @@ def on_connect(client, userdata, flags, rc):
 
 
 def get_picture_as_bytearray():
-    img_path = os.path.join('../','server', 'media', 'basketball1.jpg')
+    img_path = os.path.join('server', 'media', 'basketball1.jpg')
 
     with open(img_path, "rb") as f:
         fileContent = f.read()
@@ -50,7 +50,7 @@ client.on_connect = on_connect
 
 client.username_pw_set(username=username, password=password)
 
-if client.connect(settings.adress.broker, 1883, 60) != 0: 
+if client.connect("127.0.0.1", 1883, 60) != 0: 
     print("Could not connect to MQTT Broker!")
     sys.exit(-1)
 

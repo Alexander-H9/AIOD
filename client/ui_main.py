@@ -3,6 +3,7 @@
 #-*- coding:utf-8 -*-
 
 import os, sys
+import paho.mqtt.client as mqtt
 
 from PyQt5.QtWidgets import QDialog, QLineEdit, QFileDialog
 from PyQt5.QtGui import QPixmap, QIcon
@@ -10,6 +11,13 @@ from PyQt5.QtCore import Qt
 
 from ui_resources import dlg_login
 from ui_resources import mw_aiod
+from publish_img import on_connect
+
+# for imports from parent dir
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
+from config import settings
 
 ICON_PATH = "./client/ui_resources/icons/"
 
@@ -19,6 +27,11 @@ VID_FE = (".mp4", ".mkv", ".avi", ".flv", ".mov", ".mpeg", ".wmv")
 
 # disallowed characters for password
 SPECIAL_CHARACTERS = '!@#$%&()-_[]{};:"./<>?'
+
+# mqtt client
+client = mqtt.Client()
+client.on_connect = on_connect
+
 
 class UI_LogIn(QDialog):
     def __init__(self):
@@ -101,6 +114,13 @@ class UI_LogIn(QDialog):
         """
         user = str(self.ui.le_user.text())
         pw = str(self.ui.le_pw.text())
+
+        client.username_pw_set(username=user, password=pw)
+
+        if client.connect("127.0.0.1", 1883, 60) != 0: 
+            print("Could not connect to MQTT Broker!")
+            sys.exit(-1)
+
         
         if user == "" or any(map(lambda x: x in user, SPECIAL_CHARACTERS)):
             self.ui.label_invalid_user.show()
