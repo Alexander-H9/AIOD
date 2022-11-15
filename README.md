@@ -37,7 +37,7 @@ docker exec -ti "name" bash
 ```
 docker compose down
 ```
-# Build all docker images, update dependencies
+* Build all docker images, update dependencies
 ```
 docker compose build
 ```
