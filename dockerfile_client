@@ -1,31 +1,22 @@
-# FROM python:3.8-bullseye
+FROM python:3.8-bullseye
 
-FROM ubuntu:22.04
-
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Add user
-RUN adduser --quiet --disabled-password qtuser && usermod -a -G audio qtuser
-
-# This fix: libGL error: No matching fbConfigs or visuals found
-ENV LIBGL_ALWAYS_INDIRECT=1
-
-# Install Python 3, PyQt5
-RUN apt-get update && apt-get install -y python3-pyqt5
-
-# cv2 dependencies
+# # cv2 dependencies
 RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6 -y
 RUN apt-get install python3-pip -y
 
-# RUN pip install --upgrade pip && pip install \
-#     paho-mqtt \
-#     pydantic \
-#     PyYAML \
+RUN apt-get update && apt-get install libxcb-xinerama0
+
+RUN pip install --upgrade pip && pip install \
+    paho-mqtt \
+    pydantic \
+    PyYAML \
+    PyQt5 \
+    opencv-python-headless
 
 WORKDIR /app
 
 ENV QT_GRAPHICSSYSTEM="native"
-ENV DISPLAY "$DISPLAY"
+ENV DISPLAY $DISPLAY
 
 CMD ["sleep", "infinity"]

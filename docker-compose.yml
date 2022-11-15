@@ -19,24 +19,24 @@ services:
       - default_net
 
 
-  ai_client:
-    image: python:3.8-bullseye
+  # ai_client:
+  #   image: python:3.8-bullseye
 
-    container_name: ai_client
+  #   container_name: ai_client
 
-    build:
-      context: .
-      dockerfile: dockerfile_client
+  #   build:
+  #     context: .
+  #     dockerfile: dockerfile_client
 
-    volumes:
-      - .:/app
-      - .:/tmp/.X11-unix:/tmp/.X11-unix
+  #   volumes:
+  #     - .:/app
+  #     - /tmp/.X11-unix:/tmp/.X11-unix
 
-    # ports:
-    #   - 1882:1882
+  #   ports:
+  #     - 1882:1882
 
-    networks:
-      - default_net
+  #   networks:
+  #     - default_net
 
 
   mqtt_broker:
