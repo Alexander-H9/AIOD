@@ -11,7 +11,7 @@ from PyQt5.QtCore import Qt
 
 from ui_resources import dlg_login
 from ui_resources import mw_aiod
-from publish_img import authenticate
+from publish_img import authenticate, on_connect
 
 
 # for imports from parent dir
@@ -31,7 +31,7 @@ SPECIAL_CHARACTERS = '!@#$%&()-_[]{};:"./<>?'
 
 # mqtt client
 client = mqtt.Client()
-# client.on_connect = on_connect
+client.on_connect = on_connect
 
 
 class UI_LogIn(QDialog):
@@ -140,12 +140,9 @@ class UI_LogIn(QDialog):
         client.username_pw_set(username=user, password=pw)
 
         # connect client to broker
-        try:
-            print("start auth")
-            if authenticate(client):
-                print("done")
-                flag = False
-        except:
+        status = authenticate(client) 
+        print(status)
+        if not status:
             self.ui.label_invalid_login.setText("Unable to connect")
             flag = False
         
