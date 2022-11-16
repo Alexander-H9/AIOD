@@ -1,6 +1,6 @@
 adress:
   # broker: http://mqtt_broker:1883
-  # broker: 172.18.0.3 # ???
-  broker: 127.0.0.1
+  broker: 172.18.0.3 # ???
+  lokal_broker: 127.0.0.1
   server: http://ai_server
   client: http://ai_client

@@ -6,6 +6,7 @@ import os
 
 class Adress(BaseModel):
     broker: str
+    lokal_broker: str
     server: str
     client: str
 

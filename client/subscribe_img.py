@@ -8,7 +8,7 @@ current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
 from config import settings
-from gui_interface import authentication
+from connection import Connection
 
 # MQTT Subscriber
 
@@ -28,18 +28,37 @@ if username == None: username = "alex"
 if password == None: password = "aaap"
 
 
-def on_connect(client, userdata, flags, rc):
+def authenticate(client):
+    """
+    starts a connection to the mqtt broker
 
+    Args:
+        client
+    Returns:
+        authentication status
+    """
+
+    if client.connect(settings.adress.lokal_broker) != 0:
+        print("Could not connect to MQTT Broker!")
+        sys.exit(-1)
+    
+    return Connection.connection
+
+
+def on_connect(client, userdata, flags, rc):
+    
     if rc == 5: 
         print("Authentication error")
-        authentication(False)
+        Connection.connection = False
+        print(Connection.connection)
         exit()
 
 
     print("Connected with result code "+str(rc))
     client.subscribe(f"rec_result/{port}/topic")
     print(f"Connected to topic rec_result/{port}")
-    authentication(True)
+    Connection.connection = True
+    print(Connection.connection)
 
 
 # The callback for when a PUBLISH message is received from the server.
@@ -61,23 +80,27 @@ def on_message(client, userdata, msg):
     
 
 
-client = mqtt.Client()
-client.on_connect = on_connect
-client.on_message = on_message
+def start_connection(client):
 
-client.username_pw_set(username=username, password=password)
-
-if client.connect(settings.adress.broker) != 0:        #)1883, 60
-    print("Could not connect to MQTT Broker!")
-    sys.exit(-1)
+    if client.connect(settings.adress.lokal_broker) != 0:        #)1883, 60
+        print("Could not connect to MQTT Broker!")
+        sys.exit(-1)
 
 
-#try:
-print("Press CTRL + C to exit...")
-client.loop_forever()
+    #try:
+    print("Press CTRL + C to exit...")
+    client.loop_forever()
 
-    # client.loop_end()
-#except:
-print("Disconnecting from broker")
+        # client.loop_end()
+    #except:
+    print("Disconnecting from broker")
 
-client.disconnect()
+    client.disconnect()
+
+
+# client = mqtt.Client()
+# client.on_connect = on_connect
+# client.on_message = on_message
+# client.username_pw_set(username=username, password=password)
+
+# start_connection(client)

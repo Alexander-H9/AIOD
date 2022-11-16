@@ -11,7 +11,9 @@ from PyQt5.QtCore import Qt
 
 from ui_resources import dlg_login
 from ui_resources import mw_aiod
-from publish_img import on_connect
+from subscribe_img import on_connect
+from connection import Connection
+
 
 # for imports from parent dir
 current = os.path.dirname(os.path.realpath(__file__))
@@ -30,7 +32,7 @@ SPECIAL_CHARACTERS = '!@#$%&()-_[]{};:"./<>?'
 
 # mqtt client
 client = mqtt.Client()
-client.on_connect = on_connect
+# client.on_connect = on_connect
 
 
 class UI_LogIn(QDialog):
@@ -110,7 +112,7 @@ class UI_LogIn(QDialog):
             -
         Returns:
             -
-        Last changed: 16.10.2022, AF
+        Last changed: 16.11.2022, AH
             created
         """
         flag = True
@@ -141,6 +143,9 @@ class UI_LogIn(QDialog):
         # connect client to broker
         try:
             if client.connect("127.0.0.1", 1883, 60) != 0: 
+                print("Could not connect to MQTT Broker!")
+                print(f"Connection status: {Connection.connection}")
+                sys.exit(-1)
                 flag = False
         except:
             self.ui.label_invalid_login.setText("Unable to connect")

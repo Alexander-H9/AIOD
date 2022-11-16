@@ -27,7 +27,6 @@ if password == None: password = "aaap"  # makeathon2022
 
 
 def on_connect(client, userdata, flags, rc):
-
     if rc == 5: 
         print("Authentication error")
         exit()
@@ -50,9 +49,13 @@ if __name__ == "__main__":
 
     client.username_pw_set(username=username, password=password)
 
+    print("con before connect: ", con.connection)
+
     if client.connect("127.0.0.1", 1883, 60) != 0: 
         print("Could not connect to MQTT Broker!")
         sys.exit(-1)
+
+    print("con after connect: ", con.connection)
 
     client.publish(f"send_img/{port}/topic", get_picture_as_bytearray())
 
