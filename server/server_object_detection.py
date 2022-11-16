@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import sys
 import os
 import argparse
+import time
 
 # for imports from parent dir
 current = os.path.dirname(os.path.realpath(__file__))
@@ -30,10 +31,10 @@ def on_connect(client, userdata, flags, rc):
 
     print("Connected with result code "+str(rc))
 
-    client.subscribe("send_img/topic")
-
+    # topics to receive images and for authentication
     for port in range(1,10,1):
         client.subscribe(f"send_img/{port}/topic")
+        client.subscribe(f'authentication/{port}/topic')
 
     print("Listening to topic: send_img/topic...")
 
@@ -42,9 +43,15 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     port = msg.topic.split("/")[1]
     print(f"topic: {msg.topic}, port: {port}" )
-    receive(msg)
-    res = obj_det(model)
-    client.publish(f'rec_result/{port}/topic', str(res))
+
+    if msg.topic == f'authentication/{port}/topic':
+        time.sleep(0.1)
+        client.publish(f'auth_succ/{port}/topic', 'authenticated')
+
+    else:
+        receive(msg)
+        res = obj_det(model)
+        client.publish(f'rec_result/{port}/topic', str(res))
 
 
 def receive(msg):

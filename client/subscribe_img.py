@@ -8,7 +8,6 @@ current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
 from config import settings
-from connection import Connection
 
 # MQTT Subscriber
 
@@ -28,37 +27,15 @@ if username == None: username = "alex"
 if password == None: password = "aaap"
 
 
-def authenticate(client):
-    """
-    starts a connection to the mqtt broker
-
-    Args:
-        client
-    Returns:
-        authentication status
-    """
-
-    if client.connect(settings.adress.lokal_broker) != 0:
-        print("Could not connect to MQTT Broker!")
-        sys.exit(-1)
-    
-    return Connection.connection
-
-
 def on_connect(client, userdata, flags, rc):
     
     if rc == 5: 
         print("Authentication error")
-        Connection.connection = False
-        print(Connection.connection)
         exit()
-
 
     print("Connected with result code "+str(rc))
     client.subscribe(f"rec_result/{port}/topic")
     print(f"Connected to topic rec_result/{port}")
-    Connection.connection = True
-    print(Connection.connection)
 
 
 # The callback for when a PUBLISH message is received from the server.
@@ -98,9 +75,9 @@ def start_connection(client):
     client.disconnect()
 
 
-# client = mqtt.Client()
-# client.on_connect = on_connect
-# client.on_message = on_message
-# client.username_pw_set(username=username, password=password)
+if __name__ == "__main__":
 
-# start_connection(client)
+    client = mqtt.Client()
+    client.on_connect = on_connect
+    client.on_message = on_message
+    client.username_pw_set(username=username, password=password)

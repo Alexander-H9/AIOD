@@ -8,6 +8,7 @@ current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
 from config import settings
+from connection import Connection
 
 # MQTT Publusher
 
@@ -29,9 +30,11 @@ if password == None: password = "aaap"  # makeathon2022
 def on_connect(client, userdata, flags, rc):
     if rc == 5: 
         print("Authentication error")
+        Connection.connection = False
         exit()
 
     print("Connected with result code "+str(rc))
+    Connection.connection = True
 
 
 def get_picture_as_bytearray():
@@ -43,19 +46,60 @@ def get_picture_as_bytearray():
     byteArr = bytearray(fileContent)
     return byteArr
 
+
+def authenticate(client: mqtt.Client):
+    """
+    starts a connection to the mqtt broker
+
+    Args:
+        client
+    Returns:
+        authentication status
+    """
+    print("1")
+    def on_message(client: mqtt.Client, userdata, msg):
+        """ wait for the auth msg from the server
+        """
+        print("6")
+        if msg.topic == f'auth_succ/{port}/topic':
+            print("7")
+            print("Auth succ")
+            client.disconnect()
+
+    if client.connect(settings.adress.lokal_broker) != 0:
+        print("Could not connect to MQTT Broker!")
+        sys.exit(-1)
+    print("2")
+    # subscribe to the auth topic from the server
+    client.subscribe(f'auth_succ/{port}/topic')
+    print("3")
+    client.on_message = on_message
+    # send the auth request
+    print("4")
+    client.publish(f"authentication/{port}/topic", "authentication")
+    # wait for the response
+    print("5")
+    client.loop_forever(timeout=1.0)
+    # continue if successfull, else exit
+    client.disconnect()
+
+    return Connection.connection
+
+
 if __name__ == "__main__":
     client = mqtt.Client()
     client.on_connect = on_connect
 
     client.username_pw_set(username=username, password=password)
 
-    print("con before connect: ", con.connection)
+    if authenticate(client):
+        print("auth done")
+    else:
+        print("auth error")
 
-    if client.connect("127.0.0.1", 1883, 60) != 0: 
+    if client.connect(settings.adress.lokal_broker, 1883, 60) != 0: 
         print("Could not connect to MQTT Broker!")
         sys.exit(-1)
-
-    print("con after connect: ", con.connection)
 
     client.publish(f"send_img/{port}/topic", get_picture_as_bytearray())
 
