@@ -81,3 +81,4 @@ if __name__ == "__main__":
     client.on_connect = on_connect
     client.on_message = on_message
     client.username_pw_set(username=username, password=password)
+    start_connection(client)

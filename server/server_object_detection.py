@@ -55,7 +55,7 @@ def on_message(client, userdata, msg):
 
 
 def receive(msg):
-    with open("media/output.jpg", "wb") as f:
+    with open("/app/server/media/output.jpg", "wb") as f:
         f.write(msg.payload)
     # maybe dont save the image, give the byte array to the ai instead
     

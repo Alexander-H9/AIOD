@@ -24,7 +24,7 @@ password = args.password
 
 if port == None or port > 9 or port < 0: port = 1
 if username == None: username = "alex"  # andreas
-if password == None: password = "aaapa"  # makeathon2022
+if password == None: password = "aaap"  # makeathon2022
 # add new user password from passwd file: mosquitto_passwd -U passwd
 
 
@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
     client.username_pw_set(username=username, password=password)
 
-    print(authenticate(client))
+    #print(authenticate(client))
     if authenticate(client):
         print("auth done")
     else:

@@ -135,6 +135,11 @@ class UI_LogIn(QDialog):
             flag = False
         else:
             self.ui.label_invalid_pw.hide()
+        
+        # mqtt client
+        client = mqtt.Client()
+        client.on_connect = on_connect
+        client.connected_flag = False
 
         # init client credentials
         client.username_pw_set(username=user, password=pw)
