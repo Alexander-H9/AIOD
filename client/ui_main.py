@@ -2,11 +2,11 @@
 
 #-*- coding:utf-8 -*-
 
-import os, sys
+import os, sys, time
 import paho.mqtt.client as mqtt
 
 from PyQt5.QtWidgets import QDialog, QLineEdit, QFileDialog
-from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtGui import QPixmap, QIcon, QMovie
 from PyQt5.QtCore import Qt
 
 from ui_resources import dlg_login
@@ -24,7 +24,7 @@ ICON_PATH = "./client/ui_resources/icons/"
 
 # supported file formats
 IMG_FE = (".jpg", ".png", ".bmp", ".jpeg")
-VID_FE = (".mp4", ".mkv", ".avi", ".flv", ".mov", ".mpeg", ".wmv")
+VID_FE = (".mp4", ".mkv", ".avi", ".flv", ".mov", ".mpeg", ".wmv", ".gif")
 
 # disallowed characters for password
 SPECIAL_CHARACTERS = '!@#$%&()-_[]{};:"./<>?'
@@ -66,6 +66,9 @@ class UI_LogIn(QDialog):
             created
         """
         self.ui.label_logo.setPixmap(QPixmap(ICON_PATH+"logo.png"))
+        # mov = QMovie(ICON_PATH+"loader.gif")
+        # self.ui.label_logo.setMovie(mov)
+        # mov.start()
 
         self.ui.label_user.setPixmap(QPixmap(ICON_PATH+"user.png"))
         self.ui.label_pw.setPixmap(QPixmap(ICON_PATH+"pw.png"))
@@ -198,6 +201,7 @@ class UI_Main:
         Last changed: 16.10.2022, AF
             created
         """
+        # self.ui.label_bg.setPixmap(QPixmap(ICON_PATH+"logo.png"))
         pass
 
     def setupButtons(self):
@@ -211,6 +215,7 @@ class UI_Main:
             created
         """
         self.ui.pb_select.clicked.connect(self.selectFile)
+        self.ui.pb_upload.clicked.connect(self.upload)
     
     def selectFile(self):
         """connects all buttons with functions
@@ -222,7 +227,23 @@ class UI_Main:
         Last changed: 03.11.2022, AF
             created
         """
-        src = QFileDialog.getOpenFileName(None, 'Select one file', os.path.expanduser("~"), " ".join(IMG_FE+VID_FE).replace(".", "*."))[0] # create dialog
+        src = QFileDialog.getOpenFileName(None, 'Select one file', os.path.expanduser("~"), " ".join(IMG_FE).replace(".", "*."))[0] # create dialog
+        self.ui.label_preview.setPixmap(QPixmap(src).scaled(280, 260, Qt.KeepAspectRatio))
+        self.ui.label_filename.setText(src.split("/")[-1])
+    
+    def upload(self):
+        """connects all buttons with functions
+
+        Args:
+            -
+        Returns:
+            -
+        Last changed: 23.11.2022, AF
+            created
+        """
+        mov = QMovie(ICON_PATH+"loader.gif")
+        self.ui.label_bg.setMovie(mov)
+        # mov.start()
 
     def show(self):
         """show window after init
