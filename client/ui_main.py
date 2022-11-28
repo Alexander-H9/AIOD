@@ -11,7 +11,8 @@ from PyQt5.QtCore import Qt
 
 from ui_resources import dlg_login
 from ui_resources import mw_aiod
-from publish_img import authenticate, on_connect
+from publish_img import authenticate, on_connect, get_picture_as_bytearray
+from subscribe_img import start_connection
 
 
 # for imports from parent dir
@@ -32,6 +33,8 @@ SPECIAL_CHARACTERS = '!@#$%&()-_[]{};:"./<>?'
 # mqtt client
 client = mqtt.Client()
 client.on_connect = on_connect
+
+PORT = 1
 
 
 class UI_LogIn(QDialog):
@@ -121,18 +124,18 @@ class UI_LogIn(QDialog):
         self.ui.label_invalid_login.hide()
 
         # get text input
-        user = str(self.ui.le_user.text())
-        pw = str(self.ui.le_pw.text())
+        self.user = str(self.ui.le_user.text())
+        self.pw = str(self.ui.le_pw.text())
 
         # check for wrong input text
-        if user == "" or any(map(lambda x: x in user, SPECIAL_CHARACTERS)):
+        if self.user == "" or any(map(lambda x: x in self.user, SPECIAL_CHARACTERS)):
             self.ui.label_invalid_user.setText("Invalid user")
             self.ui.label_invalid_user.show()
             flag = False
         else:
             self.ui.label_invalid_user.hide()
 
-        if pw == "":
+        if self.pw == "":
             self.ui.label_invalid_pw.setText("Invalid entry")
             self.ui.label_invalid_pw.show()
             flag = False
@@ -145,7 +148,7 @@ class UI_LogIn(QDialog):
         client.connected_flag = False
 
         # init client credentials
-        client.username_pw_set(username=user, password=pw)
+        client.username_pw_set(username=self.user, password=self.pw)
 
         # connect client to broker
         status = authenticate(client) 
@@ -159,6 +162,7 @@ class UI_LogIn(QDialog):
             self.accept()
         else:
             self.ui.label_invalid_login.show()
+
 
 class UI_Main:
     def __init__(self):
@@ -227,9 +231,9 @@ class UI_Main:
         Last changed: 03.11.2022, AF
             created
         """
-        src = QFileDialog.getOpenFileName(None, 'Select one file', os.path.expanduser("~"), " ".join(IMG_FE).replace(".", "*."))[0] # create dialog
-        self.ui.label_preview.setPixmap(QPixmap(src).scaled(280, 260, Qt.KeepAspectRatio))
-        self.ui.label_filename.setText(src.split("/")[-1])
+        self.src = QFileDialog.getOpenFileName(None, 'Select one file', os.path.expanduser("~"), " ".join(IMG_FE).replace(".", "*."))[0] # create dialog
+        self.ui.label_preview.setPixmap(QPixmap(self.src).scaled(280, 260, Qt.KeepAspectRatio))
+        self.ui.label_filename.setText(self.src.split("/")[-1])
     
     def upload(self):
         """connects all buttons with functions
@@ -241,9 +245,21 @@ class UI_Main:
         Last changed: 23.11.2022, AF
             created
         """
-        mov = QMovie(ICON_PATH+"loader.gif")
-        self.ui.label_bg.setMovie(mov)
-        # mov.start()
+        print("test")
+        byte_img = get_picture_as_bytearray(self.src)
+        client = mqtt.Client()
+        # client.on_connect = on_connect
+        client.username_pw_set(username=self.dlg.user, password=self.dlg.pw)
+
+        if client.connect(settings.adress.lokal_broker, 1883, 60) != 0: 
+            print("Could not connect to MQTT Broker!")
+            sys.exit(-1)
+
+        client.publish(f"send_img/{PORT}/topic", byte_img)
+        result = start_connection(self.dlg.user, self.dlg.pw)
+        client.disconnect()
+        self.ui.label_result.setText(result)
+
 
     def show(self):
         """show window after init
@@ -255,8 +271,12 @@ class UI_Main:
         Last changed: 16.10.2022, AF
             created
         """
-        self.mainwindow.show() # display window with ui
-        sys.exit(self.app.exec_())
+        self.dlg = UI_LogIn()
+        ret = self.dlg.exec()
+
+        if ret:
+            self.mainwindow.show() # display window with ui
+            sys.exit(self.app.exec_())
     
     def exitWindow(self):
         """execute before closing via red x-button
@@ -272,7 +292,4 @@ class UI_Main:
     
 if __name__ == "__main__":
     ui_main = UI_Main()
-    dlg = UI_LogIn()
-    ret = dlg.exec()
-    if ret:
-        ui_main.show()
+    ui_main.show()

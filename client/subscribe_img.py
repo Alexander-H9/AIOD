@@ -1,3 +1,4 @@
+import time
 import paho.mqtt.client as mqtt
 import sys
 import argparse
@@ -8,6 +9,8 @@ current = os.path.dirname(os.path.realpath(__file__))
 parent = os.path.dirname(current)
 sys.path.append(parent)
 from config import settings
+
+from connection import Connection
 
 # MQTT Subscriber
 
@@ -54,25 +57,37 @@ def on_message(client, userdata, msg):
     per = erg[2]
 
     print(f'Server respons: \nObject:    {obj} \nPercentage: {per}')
+
+    Connection.res = f'Object: {obj} \nPercentage: {per}'
+
+    client.loop_stop()
     
 
 
-def start_connection(client):
+def start_connection(username, password):
+
+    client = mqtt.Client()
+    client.on_connect = on_connect
+    client.on_message = on_message
+    client.username_pw_set(username=username, password=password)
 
     if client.connect(settings.adress.lokal_broker) != 0:        #)1883, 60
         print("Could not connect to MQTT Broker!")
         sys.exit(-1)
 
-
     #try:
-    print("Press CTRL + C to exit...")
-    client.loop_forever()
+    # client.loop_forever()
+    client.loop_start()
+    time.sleep(0.5)
 
         # client.loop_end()
     #except:
     print("Disconnecting from broker")
 
     client.disconnect()
+
+    return Connection.res
+
 
 
 if __name__ == "__main__":

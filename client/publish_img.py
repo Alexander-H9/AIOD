@@ -38,8 +38,8 @@ def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
 
 
-def get_picture_as_bytearray():
-    img_path = os.path.join('server', 'media', 'basketball1.jpg')
+def get_picture_as_bytearray(img_path):
+    # img_path = os.path.join('server', 'media', 'basketball1.jpg')
 
     with open(img_path, "rb") as f:
         fileContent = f.read()
@@ -104,16 +104,17 @@ if __name__ == "__main__":
 
     client.username_pw_set(username=username, password=password)
 
-    #print(authenticate(client))
-    if authenticate(client):
-        print("auth done")
-    else:
-        print("auth error")
+    # if authenticate(client):
+    #     print("auth done")
+    # else:
+    #     print("auth error")
 
-    if client.connect(settings.adress.lokal_broker, 1883, 60) != 0: 
+    if client.connect(settings.adress.lokal_broker) != 0: 
         print("Could not connect to MQTT Broker!")
         sys.exit(-1)
 
-    client.publish(f"send_img/{port}/topic", get_picture_as_bytearray())
+    print(f"send_img/{port}/topic")
+
+    client.publish(f"send_img/{port}/topic", get_picture_as_bytearray("server/media/basketball1.jpg"))    # 
 
     client.disconnect()
