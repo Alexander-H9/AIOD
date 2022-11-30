@@ -22,6 +22,8 @@ password = args.password
 if username == None: username = "server"
 if password == None: password = "server_pw"
 
+media_type = 10*[None]
+
 
 def on_connect(client, userdata, flags, rc):
 
@@ -35,27 +37,32 @@ def on_connect(client, userdata, flags, rc):
     for port in range(1,10,1):
         client.subscribe(f"send_img/{port}/topic")
         client.subscribe(f'authentication/{port}/topic')
+        client.subscribe(f'media_type/{port}/topic')
 
     print("Listening to topic: send_img/topic...")
 
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-    port = msg.topic.split("/")[1]
+    port = int(msg.topic.split("/")[1])
     print(f"topic: {msg.topic}, port: {port}" )
 
     if msg.topic == f'authentication/{port}/topic':
         time.sleep(0.1)
         client.publish(f'auth_succ/{port}/topic', 'authenticated')
 
-    else:
-        receive(msg)
-        res = obj_det(model)
+    elif msg.topic == f'media_type/{port}/topic':
+        media_type[port] = msg.payload.decode('utf-8')
+
+    elif msg.topic == f'send_img/{port}/topic':
+        receive(msg, media_type[port], port)
+        res = obj_det(model, media_type[port], port)
         client.publish(f'rec_result/{port}/topic', str(res))
+        media_type[port] = None
 
 
-def receive(msg):
-    with open("/app/server/media/output.jpg", "wb") as f:
+def receive(msg, media_t, port):
+    with open(f'/app/server/media/output_{port}.{media_t}', "wb") as f:
         f.write(msg.payload)
     # maybe dont save the image, give the byte array to the ai instead
     

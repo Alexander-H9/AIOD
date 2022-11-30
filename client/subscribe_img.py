@@ -58,7 +58,7 @@ def on_message(client, userdata, msg):
 
     print(f'Server respons: \nObject:    {obj} \nPercentage: {per}')
 
-    Connection.res = f'Object: {obj} \nPercentage: {per}'
+    Connection.res = f'Object: {obj} \nPercentage: {round(float(per), 2)}'
 
     client.loop_stop()
     

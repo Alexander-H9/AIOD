@@ -22,10 +22,10 @@ def init_obj_det():
     return model
 
 
-def obj_det(model):
+def obj_det(model, media_t, port):
     # TODO change img handling
 
-    img_path = os.path.join('media', 'output.jpg')
+    img_path = os.path.join('media', f'output_{port}.{media_t}')
 
     img = image.load_img(img_path, target_size=(224, 224))
     x = image.img_to_array(img)
@@ -36,7 +36,7 @@ def obj_det(model):
 
     # print('Predicted:', decode_predictions(preds, top=3)[0])
 
-    return(decode_predictions(preds, top=1)[0])
+    return decode_predictions(preds, top=1)[0]
 
 
 def get_picture_as_bytearray():

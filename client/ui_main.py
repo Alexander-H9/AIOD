@@ -245,7 +245,7 @@ class UI_Main:
         Last changed: 23.11.2022, AF
             created
         """
-        print("test")
+        media_type = self.src.split(".")[-1]
         byte_img = get_picture_as_bytearray(self.src)
         client = mqtt.Client()
         # client.on_connect = on_connect
@@ -255,6 +255,7 @@ class UI_Main:
             print("Could not connect to MQTT Broker!")
             sys.exit(-1)
 
+        client.publish(f'media_type/{PORT}/topic', media_type)
         client.publish(f"send_img/{PORT}/topic", byte_img)
         result = start_connection(self.dlg.user, self.dlg.pw)
         client.disconnect()
