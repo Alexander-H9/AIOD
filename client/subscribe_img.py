@@ -17,15 +17,15 @@ from connection import Connection
 # password authentiacation: http://www.steves-internet-guide.com/mqtt-username-password-example/
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-p', dest='port', help='specify target host', required=False, type=int)
+#parser.add_argument('-p', dest='port', help='specify target host', required=False, type=int)
 parser.add_argument('-u', dest='username', help='specify client username', required=False, type=str)
 parser.add_argument('-pw', dest='password', help='specify client password', required=False, type=str)
 args = parser.parse_args()
-port = args.port
+#port = args.port
 username = args.username
 password = args.password
 
-if port == None or port > 9 or port < 0: port = 1
+#if port == None or port > 9 or port < 0: port = 1
 if username == None: username = "alex"
 if password == None: password = "aaap"
 
@@ -64,8 +64,9 @@ def on_message(client, userdata, msg):
     
 
 
-def start_connection(username, password):
-
+def start_connection(username, password, p):
+    global port
+    port = p
     client = mqtt.Client()
     client.on_connect = on_connect
     client.on_message = on_message
@@ -92,6 +93,7 @@ def start_connection(username, password):
 
 if __name__ == "__main__":
 
+    # port = 1
     client = mqtt.Client()
     client.on_connect = on_connect
     client.on_message = on_message

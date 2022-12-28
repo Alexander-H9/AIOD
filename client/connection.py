@@ -4,6 +4,7 @@ class Connection:
     """
     connection: bool = False
     res: str = ""
+    port: int = -1
 
     def __init__(self):
         print("Create connection class")

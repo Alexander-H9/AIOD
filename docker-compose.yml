@@ -1,42 +1,42 @@
 version: '3'
 services:
-  ai_server:
-    image: armindocachada/tensorflow2-opencv4-raspberrypi4:2.2_4.5.0
+ai_server:
+  image: armindocachada/tensorflow2-opencv4-raspberrypi4:2.2_4.5.0
 
-    container_name: ai_server_pi
+  container_name: ai_server_pi
 
-    build:
-      context: .
-      dockerfile: dockerfile_server_pi
+  build:
+    context: .
+    dockerfile: dockerfile_server_pi
 
-    volumes:
-      - .:/app
+  volumes:
+    - .:/app
 
-    ports:
-      - 1881:1881
+  ports:
+    - 1881:1881
 
-    networks:
-      - default_net
+  networks:
+    - default_net
       
       
       
-#  ai_server:
-#    image: tensorflow/tensorflow:latest
-#
-#    container_name: ai_server
-#
-#    build:
-#      context: .
-#      dockerfile: dockerfile_server
-#
-#    volumes:
-#      - .:/app
-#
-#    ports:
-#      - 1881:1881
-#
-#    networks:
-#      - default_net
+  # ai_server:
+  #   image: tensorflow/tensorflow:latest
+
+  #   container_name: ai_server
+
+  #   build:
+  #     context: .
+  #     dockerfile: dockerfile_server
+
+  #   volumes:
+  #     - .:/app
+
+  #   ports:
+  #     - 1881:1881
+
+  #   networks:
+  #     - default_net
 
 
   # ai_client:

@@ -34,8 +34,6 @@ SPECIAL_CHARACTERS = '!@#$%&()-_[]{};:"./<>?'
 client = mqtt.Client()
 client.on_connect = on_connect
 
-PORT = 1
-
 
 class UI_LogIn(QDialog):
     def __init__(self):
@@ -146,13 +144,15 @@ class UI_LogIn(QDialog):
         client = mqtt.Client()
         client.on_connect = on_connect
         client.connected_flag = False
-
+        
         # init client credentials
         client.username_pw_set(username=self.user, password=self.pw)
 
         # connect client to broker
-        status = authenticate(client) 
-        print(status)
+        global port
+        status, port = authenticate(client) 
+        print("status: ", status)
+        print("port: ", port)
         if not status:
             self.ui.label_invalid_login.setText("Unable to connect")
             flag = False
@@ -254,10 +254,10 @@ class UI_Main:
         if client.connect(settings.adress.lokal_broker, 1883, 60) != 0: 
             print("Could not connect to MQTT Broker!")
             sys.exit(-1)
-
-        client.publish(f'media_type/{PORT}/topic', media_type)
-        client.publish(f"send_img/{PORT}/topic", byte_img)
-        result = start_connection(self.dlg.user, self.dlg.pw)
+        print("listen and publish with port: ", port)
+        client.publish(f'media_type/{port}/topic', media_type)
+        client.publish(f"send_img/{port}/topic", byte_img)
+        result = start_connection(self.dlg.user, self.dlg.pw, port)
         client.disconnect()
         self.ui.label_result.setText(result)
 
