@@ -35,7 +35,7 @@ def on_connect(client, userdata, flags, rc):
 
     # topics to receive images and for authentication
     for port in range(1,10,1):
-        client.subscribe(f"send_img/{port}/topic")
+        client.subscribe(f'send_img/{port}/topic')
         client.subscribe(f'authentication/{port}/topic')
         client.subscribe(f'media_type/{port}/topic')
 
