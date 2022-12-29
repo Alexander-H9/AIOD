@@ -79,7 +79,7 @@ def start_connection(username, password, p):
     #try:
     # client.loop_forever()
     client.loop_start()
-    time.sleep(0.5)
+    time.sleep(1.0)
 
         # client.loop_end()
     #except:

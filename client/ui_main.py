@@ -294,3 +294,6 @@ class UI_Main:
 if __name__ == "__main__":
     ui_main = UI_Main()
     ui_main.show()
+
+    # TODO:
+    # call publish a exit message to the server
