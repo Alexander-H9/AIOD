@@ -218,7 +218,7 @@ iframe {
 
 .wrap-login100 {
     width: 390px;
-    background: #111111;
+    background: #131313;
     border-radius: 10px;
     overflow: hidden;
     padding: 77px 55px 33px;
@@ -249,7 +249,7 @@ iframe {
 }
 @keyframes shine {
     to {
-      background-position: 200% center;
+        background-position: -200% center;
     }
 }
 
