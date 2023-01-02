@@ -19,32 +19,28 @@
                     <span class="login100-form-title">
                         <span>AIOD</span>
                     </span>
-                    <div class="wrap-input100 validate-input" data-validate="Valid email is: a@b.c">
-                        <input class="input100" type="text" autocomplete="off" name="email">
-                        <span class="focus-input100" data-placeholder="Email"></span>
+                    <div class="wrap-input100">
+                        <input class="input100" type="text" autocomplete="off" name="usage" disabled>
+                        <span class="focus-input100" data-placeholder="Select functionality:"></span>
+                        <select name="usage" class="input100 select100">
+                            <option class="option100" value="img">Image classification</option>
+                            <option class="option100" value="txt">Text recognition</option>
+                        </select>
                     </div>
-                    <div class="wrap-input100 validate-input" data-validate="Enter password">
-                        <span class="btn-show-pass">
-                            <i class="fa-solid fa-eye"></i>
-                        </span>
-                        <input class="input100" type="password" name="pass">
-                        <span class="focus-input100" data-placeholder="Password"></span>
-                    </div>
+                    <div class="spacer50"></div>
                     <div class="container-login100-form-btn">
                         <div class="wrap-login100-form-btn">
                             <div class="login100-form-bgbtn"></div>
                             <button class="login100-form-btn">
-                                Login
+                                Upload
                             </button>
                         </div>
                     </div>
-                    <div class="text-center txt">
-                        <span class="txt1">
-                            Don’t have an account?
-                        </span>
-                        <a class="txt2" href="/signup">
-                            Sign Up
-                        </a>
+                    <div class="spacer50"></div>
+                    <div class="wrap-input100">
+                        <input class="input100" type="text" autocomplete="off" name="usage" disabled>
+                        <span class="focus-input100" data-placeholder="Result:"></span>
+                        <span class="result">99% Anything</span>
                     </div>
                 </form>
             </div>
