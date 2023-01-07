@@ -37,9 +37,8 @@ def on_connect(client, userdata, flags, rc):
         exit()
 
     print("Connected with result code "+str(rc))
-    client.subscribe(f"rec_result/{port}/topic")
     print(f"Connected to topic rec_result/{port}")
-
+    client.subscribe(f"rec_result/{port}/topic")
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
@@ -59,12 +58,11 @@ def on_message(client, userdata, msg):
     print(f'Server respons: \nObject:    {obj} \nPercentage: {per}')
 
     Connection.res = f'Object: {obj} \nPercentage: {round(float(per), 2)}'
-
-    client.loop_stop()
+    Connection.rec_flag = True
     
 
 
-def start_connection(username, password, p):
+def start_connection(username, password, p, media_type, byte_img):
     global port
     port = p
     client = mqtt.Client()
@@ -76,17 +74,22 @@ def start_connection(username, password, p):
         print("Could not connect to MQTT Broker!")
         sys.exit(-1)
 
-    #try:
-    # client.loop_forever()
+    # clean exit
+    if media_type == 0 and byte_img == 0:
+        client.publish(f'disconnect/{port}/topic', "Good bye")
+        return 0
+
     client.loop_start()
-    time.sleep(0.5)
 
-        # client.loop_end()
-    #except:
-    print("Disconnecting from broker")
+    client.publish(f'media_type/{port}/topic', media_type)
+    client.publish(f"send_img/{port}/topic", byte_img)
 
-    client.disconnect()
+    
+    while Connection.rec_flag == False:
+        time.sleep(0.1)
 
+    Connection.rec_flag = False
+    
     return Connection.res
 
 

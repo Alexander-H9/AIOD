@@ -151,6 +151,9 @@ class UI_LogIn(QDialog):
         # connect client to broker
         global port
         status, port = authenticate(client) 
+        if port == -1: 
+            status = False
+            print("The server is not up")
         print("status: ", status)
         print("port: ", port)
         if not status:
@@ -248,17 +251,13 @@ class UI_Main:
         media_type = self.src.split(".")[-1]
         byte_img = get_picture_as_bytearray(self.src)
         client = mqtt.Client()
-        # client.on_connect = on_connect
         client.username_pw_set(username=self.dlg.user, password=self.dlg.pw)
 
         if client.connect(settings.adress.lokal_broker, 1883, 60) != 0: 
             print("Could not connect to MQTT Broker!")
             sys.exit(-1)
         print("listen and publish with port: ", port)
-        client.publish(f'media_type/{port}/topic', media_type)
-        client.publish(f"send_img/{port}/topic", byte_img)
-        result = start_connection(self.dlg.user, self.dlg.pw, port)
-        client.disconnect()
+        result = start_connection(self.dlg.user, self.dlg.pw, port, media_type, byte_img)
         self.ui.label_result.setText(result)
 
 
@@ -289,6 +288,8 @@ class UI_Main:
         Last changed: 15.11.2022, AF
             created
         """
+        start_connection(self.dlg.user, self.dlg.pw, port, 0, 0)
+        print("Disconnected from broker")
         sys.exit(0)
     
 if __name__ == "__main__":

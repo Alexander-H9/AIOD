@@ -22,9 +22,10 @@ password = args.password
 if username == None: username = "server"
 if password == None: password = "server_pw"
 
+global media_type
+global connections
 media_type = {}
 connections = {}
-
 
 
 def get_port():
@@ -67,23 +68,29 @@ def on_message(client, userdata, msg):
         client.subscribe(f'send_img/{new_port}/topic')
         client.subscribe(f'authentication/{new_port}/topic')
         client.subscribe(f'media_type/{new_port}/topic')
+        client.subscribe(f'disconnect/{new_port}/topic')
         client.publish(f'auth_succ/topic', new_port)
+        media_type[new_port] = "None"
         print("Authentication finished")
 
     elif msg.topic == f'media_type/{port}/topic':
         media_type[port] = msg.payload.decode('utf-8')
 
     elif msg.topic == f'send_img/{port}/topic':
+        print(f'COMPUTING result for request by client {port}')
         receive(msg, media_type[port], port)
         res = obj_det(model, media_type[port], port)
+        print("PUBLISH ", res, " to port ", port)
         client.publish(f'rec_result/{port}/topic', str(res))
 
-    elif msg.topic == 'disconnect/{port}/topic':
+    elif msg.topic == f'disconnect/{port}/topic':
         connections.pop(port)
         media_type.pop(port)
+        print(f'CLIENT {port} is disconnectiong\nREMOVING occupied resources\nPORT {port} is available for a new connection')
         client.unsubscribe(f'send_img/{port}/topic')
         client.unsubscribe(f'authentication/{port}/topic')
         client.unsubscribe(f'media_type/{port}/topic')
+        client.unsubscribe(f'disconnect/{port}/topic')
 
 
 def receive(msg, media_t, port):

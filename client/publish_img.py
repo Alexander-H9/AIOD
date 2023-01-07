@@ -57,7 +57,6 @@ def authenticate(client: mqtt.Client):
     Returns:
         authentication status
     """
-    print("1")
     def on_disconnect(client, userdata, rc=0):
         print("Disconnected result code "+str(rc))
         client.loop_stop()
@@ -67,11 +66,11 @@ def authenticate(client: mqtt.Client):
     def on_message(client: mqtt.Client, userdata, msg):
         """ wait for the auth msg from the server
         """
-        print("got message 6")
         if msg.topic == f'auth_succ/topic':
-            print("7 Auth succ")
+            print("AUTH succ")
             port = int(msg.payload.decode('utf-8'))
-            print("8 CONNECTED WITH PORT: ", port)
+            print("CONNECTED WITH PORT: ", port)
+            client.subscribe(f"rec_result/{port}/topic")
             Connection.connection = True
             Connection.port = port
             client.disconnect()
@@ -79,24 +78,19 @@ def authenticate(client: mqtt.Client):
     if client.connect(settings.adress.lokal_broker) != 0:
         print("Could not connect to MQTT Broker!")
         sys.exit(-1)
-    print("2")
+
     # subscribe to the auth topic from the server
     client.subscribe(f'auth_succ/topic')
-    print("3")
     client.on_message = on_message
     client.on_disconnect = on_disconnect
     # send the auth request
-    print("4 publish")
     client.publish(f'authentication/topic', "authentication")
     # wait for the response
-    print("5 loop")
     client.loop_start()
     time.sleep(1)
     
     # continue if successfull, else exit
-    print("9 disconnect")
-    client.disconnect()
-    #Connection.port =  1
+    # client.disconnect()
     return Connection.connection, Connection.port
 
 
@@ -117,6 +111,6 @@ if __name__ == "__main__":
     port = 1
     print(f"send_img/{port}/topic")
 
-    client.publish(f"send_img/{port}/topic", get_picture_as_bytearray("server/media/basketball1.jpg"))    # 
+    client.publish(f"send_img/{port}/topic", get_picture_as_bytearray("/home/pi/mobiele_systeme/AIOD/server/media/pfanne.jpg")) # /server/media/pfanne.jpg
 
     client.disconnect()
