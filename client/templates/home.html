@@ -28,13 +28,60 @@
                         </select>
                     </div>
                     <div class="spacer50"></div>
-                    <div class="container-login100-form-btn">
-                        <div class="wrap-login100-form-btn">
-                            <div class="login100-form-bgbtn"></div>
-                            <button class="login100-form-btn">
-                                Upload
-                            </button>
-                        </div>
+
+
+
+                    <div class="tabbed">
+                        <form method="post" action="{{url_for('tabs') }}">
+                            <input checked="checked" id="tab1" type="radio submit" value="unactive_cam_tab" name="tabs"/>
+                            <input id="tab2" type="radio submit" value="active_cam_tab" name="tabs" />
+                        </form>
+                        
+                        <nav>
+                        <label for="tab1">Capture</label>
+                        <label for="tab2">Upload</label>
+                        </nav>
+                        
+                        <figure>
+                            <div class="tab1">
+                                <form method="post" action="{{ url_for('upload') }}">
+                                    <div class="container-login100-form-btn">
+                                        <div class="wrap-login100-form-btn">
+                                            <div class="login100-form-bgbtn"></div>
+                                            <button class="login100-form-btn" type="submit" value="Upload" name="upload">
+                                                Upload
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="tab2">
+                                <span>Vorschau</span>
+                                <div class="cam_frame">
+                                    <img src="{{ url_for('camera') }}" alt="Camera is not available now. :(" height="max-height: 200px">
+                                </div>
+                                <form method="post" action="{{ url_for('capture') }}">
+                                    <div class="spacer50"></div>
+                                    <div class="container-login100-form-btn">
+                                        <div class="wrap-login100-form-btn">
+                                            <div class="login100-form-bgbtn"></div>
+                                            <button class="login100-form-btn" type="submit" value="Capture" name="capture">
+                                                Capture
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </figure>
+                    </div>
+
+
+                    
+                    <div class="spacer50"></div>
+                    <div>
+
                     </div>
                     <div class="spacer50"></div>
                     <div class="wrap-input100">
