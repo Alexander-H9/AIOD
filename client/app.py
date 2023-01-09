@@ -20,8 +20,9 @@ def index():
 
 @app.route("/login", methods=["POST"])
 def login():
-    email = request.args.get("email", type=str)
+    username = request.args.get("username", type=str)
     password = request.args.get("password", type=str)
+    print(username, password)
 
     # mqtt client
     client = mqtt.Client()
@@ -29,7 +30,7 @@ def login():
     client.connected_flag = False
     
     # init client credentials
-    client.username_pw_set(username=email, password=password)
+    client.username_pw_set(username=username, password=password)
 
     # connect client to broker
     global port
@@ -45,7 +46,7 @@ def login():
     if flag:
         return redirect("/home"), 302
     else:
-        return jsonify([flag, status])
+        return ""
 
 
 @app.route("/home")
