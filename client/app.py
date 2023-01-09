@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 
-from flask import Flask, render_template, Response, request
+from flask import Flask, render_template, Response, request, jsonify, redirect
 from waitress import serve
 import capture_img
+
+import paho.mqtt.client as mqtt
+from publish_img import authenticate, on_connect, get_picture_as_bytearray
+from subscribe_img import start_connection
 
 app = Flask(__name__)
 
@@ -13,6 +17,35 @@ camActive=False
 def index():
     """Loading index page"""
     return render_template("index.html")
+
+@app.route("/login", methods=["POST"])
+def login():
+    email = request.args.get("email", type=str)
+    password = request.args.get("password", type=str)
+
+    # mqtt client
+    client = mqtt.Client()
+    client.on_connect = on_connect
+    client.connected_flag = False
+    
+    # init client credentials
+    client.username_pw_set(username=email, password=password)
+
+    # connect client to broker
+    global port
+    status, port = authenticate(client) 
+    if port == -1: 
+        status = False
+        print("The server is not up")
+    print("status: ", status)
+    print("port: ", port)
+    if not status:
+        flag = False
+
+    if flag:
+        return redirect("/home"), 302
+    else:
+        return jsonify([flag, status])
 
 
 @app.route("/home")

@@ -1,3 +1,22 @@
+const email_input = document.querySelector("#email-input");
+const password_input = document.querySelector("#password-input");
+const login_btn = document.querySelector("#login-btn")
+
+login_btn.addEventListener("click", async () => await login());
+
+async function login() {
+    var email = email_input.value;
+    var password = password_input.value;
+    let response = await fetch("/login?email="+email+"&password="+password, {
+        method: "POST"
+    });
+    if (response.status == 200) {
+        let res = await response.json()
+        console.log(res)
+    } else {
+        console.log("Failed")
+    }
+}
 
 (function ($) {
 
