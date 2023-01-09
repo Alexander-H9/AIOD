@@ -1,6 +1,6 @@
 adress:
   # broker: http://mqtt_broker:1883   # seems to work only on linux
-  broker: 172.19.0.2
+  broker: 172.20.0.5
   lokal_broker: 127.0.0.1
   server: http://ai_server_pi
   client: http://ai_client

@@ -75,7 +75,7 @@ def authenticate(client: mqtt.Client):
             Connection.port = port
             client.disconnect()
     
-    if client.connect(settings.adress.lokal_broker) != 0:
+    if client.connect(settings.adress.broker) != 0:
         print("Could not connect to MQTT Broker!")
         sys.exit(-1)
 
