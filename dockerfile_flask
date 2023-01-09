@@ -1,0 +1,22 @@
+# FROM python:3.8-bullseye
+FROM armindocachada/tensorflow2-opencv4-raspberrypi4:2.2_4.5.0
+
+# # cv2 dependencies
+# RUN apt-get update
+# RUN apt-get install ffmpeg libsm6 libxext6 -y
+# RUN apt-get install python3-pip -y
+# RUN apt-get update && apt-get install libxcb-xinerama0
+# RUN pip install -y opencv-python-headless 
+
+
+RUN pip install --upgrade pip && pip install \
+    paho-mqtt \
+    pydantic \
+    PyYAML \
+    waitress \
+    flask
+
+WORKDIR /app/client
+
+
+CMD ["sleep", "infinity"]

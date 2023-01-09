@@ -6,6 +6,6 @@ RUN pip install --upgrade pip && pip install \
     PyYAML \
     matplotlib 
 
-WORKDIR /app
+WORKDIR /app/server
 
 CMD ["sleep", "infinity"]

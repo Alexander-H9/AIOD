@@ -1,25 +1,23 @@
 version: '3'
 services:
-ai_server:
-  image: armindocachada/tensorflow2-opencv4-raspberrypi4:2.2_4.5.0
+  ai_server:
+    image: armindocachada/tensorflow2-opencv4-raspberrypi4:2.2_4.5.0
 
-  container_name: ai_server_pi
+    container_name: ai_server_pi
 
-  build:
-    context: .
-    dockerfile: dockerfile_server_pi
+    build:
+      context: .
+      dockerfile: dockerfile_server_pi
 
-  volumes:
-    - .:/app
+    volumes:
+      - .:/app
 
-  ports:
-    - 1881:1881
+    ports:
+      - 1881:1881
 
-  networks:
-    - default_net
-      
-      
-      
+    networks:
+      - default_net
+
   # ai_server:
   #   image: armindocachada/tensorflow2-opencv4-raspberrypi4:2.2_4.5.0
 
@@ -37,47 +35,45 @@ ai_server:
 
   #   networks:
   #     - default_net
-      
-      
-      
-  ai_server:
-    image: tensorflow/tensorflow:latest
 
-    container_name: ai_server
+
+
+  # ai_server:
+  #   image: tensorflow/tensorflow:latest
+
+  #   container_name: ai_server
+
+  #   build:
+  #     context: .
+  #     dockerfile: dockerfile_server
+
+  #   volumes:
+  #     - .:/app
+
+  #   ports:
+  #     - 1881:1881
+
+  #   networks:
+  #     - default_net
+
+
+  flask_server:
+    image: python:3.8-bullseye
+
+    container_name: flask_server
 
     build:
       context: .
-      dockerfile: dockerfile_server
+      dockerfile: dockerfile_flask
 
     volumes:
       - .:/app
 
     ports:
-      - 1881:1881
+      - 5000:5000
 
     networks:
       - default_net
-
-
-  # ai_client:
-  #   image: python:3.8-bullseye
-
-  #   container_name: ai_client
-
-  #   build:
-  #     context: .
-  #     dockerfile: dockerfile_client
-
-  #   volumes:
-  #     - .:/app
-  #     - /tmp/.X11-unix:/tmp/.X11-unix
-
-  #   ports:
-  #     - 1882:1882
-
-  #   networks:
-  #     - default_net
-
 
   mqtt_broker:
     image: eclipse-mosquitto:2.0.15
@@ -99,11 +95,9 @@ ai_server:
     ports:
       - 1883:1883
       - 9001:9001
-      
 
     networks:
       - default_net
-
 
 networks:
   default_net:
