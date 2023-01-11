@@ -8,12 +8,12 @@ import paho.mqtt.client as mqtt
 from publish_img import authenticate, on_connect, get_picture_as_bytearray
 from subscribe_img import start_connection
 
+IMG_FE = (".jpg", ".png", ".bmp", ".jpeg")
+
 app = Flask(__name__)
 
-global camActive
-camActive=False
-
 @app.route("/")
+@app.route("/index")
 def index():
     """Loading index page"""
     return render_template("index.html")
@@ -48,45 +48,34 @@ def login():
     else:
         return ""
 
+@app.route("/upload", methods=["POST"])
+def upload():
+    flag = 0
+    status = ""
+
+    f = request.files["image"]
+    f_name = f.filename
+
+    func = request.args.get("functionality", type=str)
+    print(f_name, func)
+
+    if not f_name.endswith(IMG_FE):
+        pass
+    
+    else:
+        flag, status = 1, "invalid file type"
+    return jsonify([flag, status])
 
 @app.route("/home")
 def home():
     """Loading home page"""
     return render_template("home.html")
 
-@app.route("/tabs")
-def tabs():
-    if request.form.get('active_cam_tab'):
-        camActive=True
-    else:
-        camActive=False
-
-
-@app.route("/camera")
-def camera():
-    if camActive==True:
-        return Response(capture_img.frames(), \
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
-    else:
-        return render_template("home.html")
-
-
-@app.route("/capture")
-def capture():
-    capture_img.capture = 1
-    return render_template("home.html")
-
-
-@app.route("/upload")
-def upload():
-    #TODO
-    return render_template("home.html")
-
-
+# ===============================
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
-
+# ===============================
 
 if __name__ == "__main__":
     if __debug__:
