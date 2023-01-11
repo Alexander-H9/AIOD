@@ -62,7 +62,7 @@ def on_message(client, userdata, msg):
     
 
 
-def start_connection(username, password, p, media_type, byte_img):
+def start_connection(username, password, p, media_type, byte_img, ai_function="object_detection"):
     global port
     port = p
     client = mqtt.Client()
@@ -81,6 +81,7 @@ def start_connection(username, password, p, media_type, byte_img):
 
     client.loop_start()
 
+    client.publish(f'function_topic/{port}/topic', ai_function)
     client.publish(f'media_type/{port}/topic', media_type)
     client.publish(f"send_img/{port}/topic", byte_img)
 

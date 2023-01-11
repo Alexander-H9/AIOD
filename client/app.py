@@ -31,7 +31,7 @@ def login():
     
     # init client credentials
     client.username_pw_set(username=username, password=password)
-
+    flag = True
     # connect client to broker
     global port
     status, port = authenticate(client) 

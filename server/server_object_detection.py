@@ -10,6 +10,7 @@ parent = os.path.dirname(current)
 sys.path.append(parent)
 
 from object_detection import obj_det, init_obj_det
+from traffic_sign_detection import init_traffic_sign_det, traffic_sign_det
 from config import settings
 
 parser = argparse.ArgumentParser()
@@ -26,6 +27,7 @@ global media_type
 global connections
 media_type = {}
 connections = {}
+ai_function = {}
 
 
 def get_port():
@@ -42,14 +44,8 @@ def on_connect(client, userdata, flags, rc):
         exit()
 
     print("Connected with result code "+str(rc))
-
     # topics to receive images and for authentication
     client.subscribe(f'authentication/topic')
-    # for port in range(1,10,1):
-    #     client.subscribe(f'send_img/{port}/topic')
-    #     client.subscribe(f'authentication/{port}/topic')
-    #     client.subscribe(f'media_type/{port}/topic')
-
     print("Listening to topic: authentication/topic...")
     print("Listening to topic: send_img/topic...")
 
@@ -65,6 +61,7 @@ def on_message(client, userdata, msg):
     if msg.topic == f'authentication/topic':
         time.sleep(0.1)
         new_port = get_port()
+        client.subscribe(f'function_topic/{new_port}/topic')
         client.subscribe(f'send_img/{new_port}/topic')
         client.subscribe(f'authentication/{new_port}/topic')
         client.subscribe(f'media_type/{new_port}/topic')
@@ -73,23 +70,37 @@ def on_message(client, userdata, msg):
         media_type[new_port] = "None"
         print("Authentication finished")
 
+    elif msg.topic == f'function_topic/{port}/topic':
+        ai_function[port] = msg.payload.decode('utf-8')
+
     elif msg.topic == f'media_type/{port}/topic':
         media_type[port] = msg.payload.decode('utf-8')
 
     elif msg.topic == f'send_img/{port}/topic':
+
         print(f'COMPUTING result for request by client {port}')
         receive(msg, media_type[port], port)
-        res = obj_det(model, media_type[port], port)
+        
+        if ai_function[port] == "object_detection":
+            
+            res = obj_det(model, media_type[port], port)
+
+        elif ai_function[port] == "traffic_sign_detection":
+            
+            res = traffic_sign_det(model_traffic, media_type[port], port)
+
         print("PUBLISH ", res, " to port ", port)
         client.publish(f'rec_result/{port}/topic', str(res))
 
     elif msg.topic == f'disconnect/{port}/topic':
         connections.pop(port)
         media_type.pop(port)
+        ai_function.pop(port)
         print(f'CLIENT {port} is disconnectiong\nREMOVING occupied resources\nPORT {port} is available for a new connection')
         client.unsubscribe(f'send_img/{port}/topic')
         client.unsubscribe(f'authentication/{port}/topic')
         client.unsubscribe(f'media_type/{port}/topic')
+        client.unsubscribe(f'function_topic/{port}/topic')
         client.unsubscribe(f'disconnect/{port}/topic')
 
 
@@ -106,7 +117,10 @@ if __name__ == '__main__':
     client.on_connect = on_connect
     client.on_message = on_message
 
+    print("Starting ai server...")
     model = init_obj_det()
+    model_traffic = init_traffic_sign_det()
+    print("done, models loaded and server is running")
 
     client.username_pw_set(username=username, password=password)
 

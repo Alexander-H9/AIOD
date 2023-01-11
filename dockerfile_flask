@@ -19,4 +19,5 @@ RUN pip install --upgrade pip && pip install \
 WORKDIR /app/client
 
 
-CMD ["sleep", "infinity"]
+# CMD ["sleep", "infinity"]
+CMD ["python3", "app.py"]

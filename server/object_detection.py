@@ -16,8 +16,8 @@ def init_obj_det():
         model.compile()
         model.save(os.path.join('models', 'ResNet50'))
     else:
-         model = keras.models.load_model(model_dir)
-         model.compile()
+        model = keras.models.load_model(model_dir)
+        model.compile()
 
     return model
 

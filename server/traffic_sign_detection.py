@@ -6,13 +6,7 @@ import matplotlib.pyplot as plt
 import cv2
 import h5py
 import pathlib
-
-model_dir = pathlib.Path('/app/server/models/traffic_sign_classification.h5')
-model = load_model(model_dir)
-
-# Open Image for testing
-img = cv2.imread("/app/server/media/sign3.png",1)
-img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+import os
 
 labels: dict = {
     0:"Speed limit (20 km/h)", 1: "Speed limit (30 km/h)", 2: "Speed limit (50 km/h)", 3: "Speed limit (60 km/h)", 4: "Speed limit (70 km/h)", 5: "Speed limit (80 km/h)", 
@@ -26,40 +20,66 @@ labels: dict = {
     41: "End of no passing", 42: "End of no passing by vehicles over 3.5 metric tons"
 }
 
+def init_traffic_sign_det():
 
-def grayscale(img):
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    return img
+    model_dir = pathlib.Path('/app/server/models/traffic_sign_classification.h5')
+
+    if not model_dir.exists():
+
+        model = load_model(model_dir)
+        model.compile()
+        model.save(os.path.join('models', 'traffic_sign_classification.h5'))
+
+    else:
+        model = load_model(model_dir)
+        model.compile()
+
+    return model
 
 
-def equalize(img):
-    img = cv2.equalizeHist(img)
-    return img
+def traffic_sign_det(model, media_t, port):
+
+    # Open Image for testing
+    img_path = os.path.join('media', f'output_{port}.{media_t}')
+    # img = cv2.imread("/app/server/media/sign3.png",1)
+    img = cv2.imread(img_path,1)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+    def grayscale(img):
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        return img
 
 
-def preprocessing(img):
-    img = grayscale(img)
-    img = equalize(img)
-    #normalize the images, i.e. convert the pixel values to fit btwn 0 and 1
-    img = img/255
-    return img
+    def equalize(img):
+        img = cv2.equalizeHist(img)
+        return img
 
-#Preprocess image
-img = np.asarray(img)
-img = cv2.resize(img, (32, 32))
-img = preprocessing(img)
 
-#plt.imshow(img, cmap = plt.get_cmap('gray'))
-print(img.shape)
+    def preprocessing(img):
+        img = grayscale(img)
+        img = equalize(img)
+        #normalize the images, i.e. convert the pixel values to fit btwn 0 and 1
+        img = img/255
+        return img
 
-#Reshape reshape
-img = img.reshape(1, 32, 32, 1)
+    #Preprocess image
+    img = np.asarray(img)
+    img = cv2.resize(img, (32, 32))
+    img = preprocessing(img)
 
-#Test image
-predict_x = model.predict(img)
+    #plt.imshow(img, cmap = plt.get_cmap('gray'))
+    # print(img.shape)
 
-classes_x=np.argmax(predict_x,axis=1)
+    #Reshape reshape
+    img = img.reshape(1, 32, 32, 1)
 
-print("The Predicted sign is in Class: "+ str(classes_x))
+    #Test image
+    predict_x = model.predict(img)
 
-print(f'The predicted class {classes_x} is a: {labels[int(classes_x)]}')
+    classes_x=np.argmax(predict_x,axis=1)
+
+    print("The Predicted sign is in Class: "+ str(classes_x))
+
+    print(f'The predicted class {classes_x} is a: {labels[int(classes_x)]}')
+
+    return labels[int(classes_x)]

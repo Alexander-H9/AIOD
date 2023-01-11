@@ -6,6 +6,8 @@ RUN pip install --upgrade pip && pip install \
     PyYAML \
     matplotlib 
 
-WORKDIR /app/server
+WORKDIR /app
 
-CMD ["sleep", "infinity"]
+
+# CMD ["sleep", "infinity"]
+CMD ["python3", "server/server_object_detection.py"]
