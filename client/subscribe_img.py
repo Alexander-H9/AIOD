@@ -85,9 +85,14 @@ def start_connection(username, password, p, media_type, byte_img, ai_function="o
     client.publish(f'media_type/{port}/topic', media_type)
     client.publish(f"send_img/{port}/topic", byte_img)
 
-    
+    timeout = 0
     while Connection.rec_flag == False:
+        if timeout >= 100.0: 
+            Connection.res = "timout for classification"
+            break
+            
         time.sleep(0.1)
+        timeout += 1
 
     Connection.rec_flag = False
     

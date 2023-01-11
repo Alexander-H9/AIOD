@@ -4,10 +4,11 @@ RUN pip install --upgrade pip && pip install \
     paho-mqtt \
     pydantic \
     PyYAML \
-    matplotlib 
+    matplotlib \
+    keras 
 
-WORKDIR /app
+WORKDIR /app/server
 
 
 # CMD ["sleep", "infinity"]
-CMD ["python3", "server/server_object_detection.py"]
+CMD ["python3", "server_object_detection.py"]

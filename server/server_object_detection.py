@@ -10,7 +10,9 @@ parent = os.path.dirname(current)
 sys.path.append(parent)
 
 from object_detection import obj_det, init_obj_det
-from traffic_sign_detection import init_traffic_sign_det, traffic_sign_det
+
+# this functions dont work with the installed tf version
+# from traffic_sign_detection import init_traffic_sign_det, traffic_sign_det # 
 from config import settings
 
 parser = argparse.ArgumentParser()
@@ -86,8 +88,9 @@ def on_message(client, userdata, msg):
             res = obj_det(model, media_type[port], port)
 
         elif ai_function[port] == "traffic_sign_detection":
-            
-            res = traffic_sign_det(model_traffic, media_type[port], port)
+
+            # res = traffic_sign_det(model_traffic, media_type[port], port)
+            res = "this feature can not be used due to a incompatible tensorflow version"
 
         print("PUBLISH ", res, " to port ", port)
         client.publish(f'rec_result/{port}/topic', str(res))
@@ -119,7 +122,7 @@ if __name__ == '__main__':
 
     print("Starting ai server...")
     model = init_obj_det()
-    model_traffic = init_traffic_sign_det()
+    # model_traffic = init_traffic_sign_det()
     print("done, models loaded and server is running")
 
     client.username_pw_set(username=username, password=password)
