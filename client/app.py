@@ -33,9 +33,6 @@ def account_login():
     print(request.form)
     username = request.form.get("username", type=str)
     password = request.form.get("password", type=str)
-    
-    if request.method == "POST":
-        print(request.method)
 
     # # mqtt client
     # client = mqtt.Client()

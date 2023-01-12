@@ -26,6 +26,7 @@ async function loginAccount() {
             if (flag == 0) {
                 login_span.style.color = "#32cd32";
                 login_span.innerHTML = "<i class='fas fa-check'></i>";
+                await new Promise(r => setTimeout(r, 1000));
                 window.location.replace("/home");
             } else {
                 login_span.style.color = "#f50537";
