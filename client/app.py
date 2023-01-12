@@ -58,24 +58,25 @@ def account_login():
         pass
     else:
         flag = 1
-        status = "not implemented"
+        status = "not registered"
     return jsonify([flag, status])
 
 # ===========================================
 
-@app.route("/upload", methods=["POST"])
-def upload():
+@app.route("/media/upload", methods=["POST"])
+def upload_media():
     flag = 0
     status = ""
 
     f = request.files["image"]
     f_name = f.filename
 
-    func = request.args.get("functionality", type=str)
+    func = request.form.get("functionality", type=str)
     print(f_name, func)
 
-    if not f_name.endswith(IMG_FE):
-        pass
+    if f_name.endswith(IMG_FE):
+        if f_name == "pfanne.jpg":
+            status = "99% Bratpfanne"
     
     else:
         flag, status = 1, "invalid file type"

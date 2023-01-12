@@ -516,6 +516,8 @@ iframe {
     }
 }
 
+/* extra */
+
 .spacer20 {
     margin-top: 20px;
 }
@@ -539,3 +541,24 @@ iframe {
     display: inline-block;
     font-size: 15px;
 }
+
+/*  file upload */
+
+/* .dropzone {
+    width: 30%;
+    margin: 0 auto;
+    border: 1px dashed #999999;
+    border-radius: 3px;
+}
+
+.upload-icon {
+    display: inline-block;
+    vertical-align: middle;
+}
+#upload-icon {
+    height: 50px;
+}
+
+#upload-input {
+    opacity: 0;
+} */
