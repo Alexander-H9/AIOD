@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, render_template, Response, request, jsonify, redirect
+from flask import Flask, render_template, Response, request, jsonify, redirect, url_for
 from waitress import serve
 import capture_img
 
@@ -18,35 +18,50 @@ def index():
     """Loading index page"""
     return render_template("index.html")
 
-@app.route("/login", methods=["POST"])
-def login():
-    username = request.args.get("username", type=str)
-    password = request.args.get("password", type=str)
-    print(username, password)
+@app.route("/home")
+def home():
+    """Loading home page"""
+    return render_template("home.html")
 
-    # mqtt client
-    client = mqtt.Client()
-    client.on_connect = on_connect
-    client.connected_flag = False
+# ===========================================
+
+@app.route("/account/login", methods=["POST"])
+def account_login():
+    flag = 0
+    status = ""
+
+    print(request.form)
+    username = request.form.get("username", type=str)
+    password = request.form.get("password", type=str)
     
-    # init client credentials
-    client.username_pw_set(username=username, password=password)
-    flag = True
-    # connect client to broker
-    global port
-    status, port = authenticate(client) 
-    if port == -1: 
-        status = False
-        print("The server is not up")
-    print("status: ", status)
-    print("port: ", port)
-    if not status:
-        flag = False
+    if request.method == "POST":
+        print(request.method)
 
-    if flag:
-        return redirect("/home"), 302
+    # # mqtt client
+    # client = mqtt.Client()
+    # client.on_connect = on_connect
+    # client.connected_flag = False
+    
+    # # init client credentials
+    # client.username_pw_set(username=username, password=password)
+    # flag = True
+    # # connect client to broker
+    # global port
+    # status, port = authenticate(client) 
+    # if port == -1: 
+    #     status = False
+    #     print("The server is not up")
+    # print("status: ", status)
+    # print("port: ", port)
+    # if not status:
+    if username == "admin" and password == "admin":
+        pass
     else:
-        return ""
+        flag = 1
+        status = "not implemented"
+    return jsonify([flag, status])
+
+# ===========================================
 
 @app.route("/upload", methods=["POST"])
 def upload():
@@ -66,16 +81,13 @@ def upload():
         flag, status = 1, "invalid file type"
     return jsonify([flag, status])
 
-@app.route("/home")
-def home():
-    """Loading home page"""
-    return render_template("home.html")
+# ===========================================
 
-# ===============================
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
-# ===============================
+
+# ===========================================
 
 if __name__ == "__main__":
     if __debug__:

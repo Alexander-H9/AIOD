@@ -19,24 +19,31 @@
                     <span class="login100-form-title">
                         <span>AIOD</span>
                     </span>
-                    <div class="wrap-input100 validate-input">
-                        <input class="input100" id="username-input" type="text" autocomplete="off" name="username">
-                        <span class="focus-input100" data-placeholder="User"></span>
-                    </div>
-                    <div class="wrap-input100 validate-input" data-validate="Enter password">
-                        <span class="btn-show-pass">
-                            <i class="fa-solid fa-eye"></i>
-                        </span>
-                        <input class="input100" id="password-input" type="password" name="pass">
-                        <span class="focus-input100" data-placeholder="Password"></span>
-                    </div>
+                    <span class="return-span" id="display-left-span"></span>
+                    <form>
+                        <div class="wrap-input100" data-validate="Enter user" id="user-div">
+                            <input class="input100" id="username-input" type="text" autocomplete="off" name="username">
+                            <span class="focus-input100" data-placeholder="User"></span>
+                        </div>
+                        <div class="wrap-input100" data-validate="Enter password">
+                            <span class="btn-show-pass">
+                                <i class="fa-solid fa-eye"></i>
+                            </span>
+                            <input class="input100" id="password-input" type="password" name="pass">
+                            <span class="focus-input100" data-placeholder="Password"></span>
+                        </div>
+                    </form>
+                    <!-- <input type="submit" value="Login" class="submit-btn" id="login-btn"> -->
                     <div class="container-login100-form-btn">
                         <div class="wrap-login100-form-btn">
                             <div class="login100-form-bgbtn"></div>
-                            <button class="login100-form-btn" id="login-btn">
+                            <button class="login100-form-btn" id="login-btn" type="submit">
                                 Login
                             </button>
                         </div>
+                    </div>
+                    <div class="col mx-auto text-center">
+                        <span class="return-span" id="login-span"></span>
                     </div>
                     <div class="text-center txt">
                         <span class="txt1">

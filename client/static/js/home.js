@@ -12,7 +12,7 @@ async function uploadFile() {
     let img = upload_input.files[0];
     console.log(img)
     
-    if (typeof myVar !== 'undefined') {
+    if (typeof myVar !== 'undefined')  {
         let formData = new FormData();
         formData.append("image", img);
 

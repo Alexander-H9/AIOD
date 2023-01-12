@@ -1,21 +1,57 @@
 const username_input = document.querySelector("#username-input");
 const password_input = document.querySelector("#password-input");
-const login_btn = document.querySelector("#login-btn")
+const login_btn = document.querySelector("#login-btn");
+const login_span = document.querySelector("#login-span");
 
-login_btn.addEventListener("click", async () => await login());
+login_btn.addEventListener("click", async () => await loginAccount());
 
-async function login() {
+async function loginAccount() {
     var username = username_input.value;
     var password = password_input.value;
-    let response = await fetch("/login?username="+username+"&password="+password, {
-        method: "POST"
-    });
-    if (response.status == 200) {
-        let res = await response.text()
-        console.log(res)
+
+    let formData = new FormData();
+    formData.append("username", username);
+    formData.append("password", password);
+
+    if (username !== "" && password !== ""){
+        let response = await fetch("/account/login", {
+            method: "POST",
+            body:formData
+        });
+        if (response.status == 200) {
+            let res = await response.json();
+            console.log(res);
+            let flag = res[0];
+            let status = res[1];
+            if (flag == 0) {
+                login_span.style.color = "#32cd32";
+                login_span.innerHTML = "<i class='fas fa-check'></i>";
+                window.location.replace("/home");
+            } else {
+                login_span.style.color = "#f50537";
+                login_span.innerHTML = "<i class='fas fa-xmark'></i> "+status;
+            }
+        } else {
+            login_span.style.color = "#f50537";
+            login_span.textContent = "Error";
+        }
+    } else if (username == "" && password == ""){
+        showValidate("#username-input");
+        showValidate("#password-input");
+    } else if (username == ""){
+        showValidate("#username-input");
+    } else if (password == ""){
+        showValidate("#password-input");
     } else {
-        console.log("Failed")
+        alert("fatal error");
     }
+    await new Promise(r => setTimeout(r, 2000));
+    login_span.textContent = "";
+}
+
+function showValidate(input) {
+    var thisAlert = $(input).parent();
+    $(thisAlert).addClass('alert-validate');
 }
 
 (function ($) {
@@ -30,20 +66,6 @@ async function login() {
             }
         })    
     })
-  
-    var input = $('.validate-input .input100');
-    $('.validate-form').on('submit',function(){
-        var check = true;
-
-        for(var i=0; i<input.length; i++) {
-            if(validate(input[i]) == false){
-                showValidate(input[i]);
-                check=false;
-            }
-        }
-
-        return check;
-    });
 
     $('.validate-form .input100').each(function(){
         $(this).focus(function(){
@@ -51,11 +73,6 @@ async function login() {
         });
     });
 
-    function showValidate(input) {
-        var thisAlert = $(input).parent();
-
-        $(thisAlert).addClass('alert-validate');
-    }
     function hideValidate(input) {
         var thisAlert = $(input).parent();
 
