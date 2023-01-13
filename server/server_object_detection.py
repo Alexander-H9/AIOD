@@ -57,12 +57,12 @@ def on_message(client, userdata, msg):
     if msg.topic != f'authentication/topic':
         port = int(msg.topic.split("/")[1])
         print(f"topic: {msg.topic}, port: {port}")
-    else:
-        print("Starting authentication")
+
 
     if msg.topic == f'authentication/topic':
         time.sleep(0.1)
         new_port = get_port()
+        print(f'Starting authentication of port {new_port}')
         client.subscribe(f'function_topic/{new_port}/topic')
         client.subscribe(f'send_img/{new_port}/topic')
         client.subscribe(f'authentication/{new_port}/topic')

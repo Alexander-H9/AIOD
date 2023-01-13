@@ -10,5 +10,5 @@ RUN pip install --upgrade pip && pip install \
 WORKDIR /app/server
 
 
-# CMD ["sleep", "infinity"]
-CMD ["python3", "server_object_detection.py"]
+CMD ["sleep", "infinity"]
+# CMD ["python3", "server_object_detection.py"]
