@@ -70,7 +70,7 @@ def start_connection(username, password, p, media_type, byte_img, ai_function="o
     client.on_message = on_message
     client.username_pw_set(username=username, password=password)
 
-    if client.connect(settings.adress.lokal_broker) != 0:        #)1883, 60
+    if client.connect(settings.adress.broker) != 0:        #)1883, 60
         print("Could not connect to MQTT Broker!")
         sys.exit(-1)
 

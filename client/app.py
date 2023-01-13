@@ -97,6 +97,7 @@ def upload_media():
             sys.exit(-1)
         print("listen and publish with port: ", port)
         status = start_connection(username, password, port, media_type, byte_img)
+        flag = True
 
     
     else:
@@ -104,6 +105,11 @@ def upload_media():
     return jsonify([flag, status])
 
 # ===========================================
+@app.route("/account/logout", methods=["POST"])
+def account_logout():
+    start_connection(username, password, port, 0, 0)
+
+
 
 @app.errorhandler(404)
 def page_not_found(e):

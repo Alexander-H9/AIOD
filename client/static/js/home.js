@@ -18,7 +18,6 @@ async function uploadFile() {
 
         upload_span.innerHTML = '<img src="./static/loader2.gif" id="loading-gif" class="img-fluid" width="50"></img>';
         let response = await fetch("/media/upload", {method: "POST", body:formData});
-        await new Promise(r => setTimeout(r, 5000));
         upload_span.innerHTML = "";
         if (response.status == 200) {
             let res = await response.json()
