@@ -11,6 +11,7 @@ from subscribe_img import start_connection
 IMG_FE = (".jpg", ".png", ".bmp", ".jpeg")
 
 app = Flask(__name__)
+app.is_logged_in = False
 
 @app.route("/")
 @app.route("/index")
@@ -20,14 +21,16 @@ def index():
 
 @app.route("/home")
 def home():
-    """Loading home page"""
-    return render_template("home.html")
+    if app.is_logged_in == True:
+        return render_template("home.html")
+    else:
+        return redirect(url_for(".index"))
 
 # ===========================================
 
 @app.route("/account/login", methods=["POST"])
 def account_login():
-    flag = 0
+    flag = False
     status = ""
 
     print(request.form)
@@ -52,17 +55,21 @@ def account_login():
     # print("port: ", port)
     # if not status:
     if username == "admin" and password == "admin":
-        pass
+        flag = True
     else:
-        flag = 1
+        flag = False
         status = "not registered"
+
+    if flag == True:
+        app.is_logged_in = True
+
     return jsonify([flag, status])
 
 # ===========================================
 
 @app.route("/media/upload", methods=["POST"])
 def upload_media():
-    flag = 0
+    flag = False
     status = ""
 
     f = request.files["image"]
@@ -76,7 +83,7 @@ def upload_media():
             status = "99% Bratpfanne"
     
     else:
-        flag, status = 1, "invalid file type"
+        flag, status = False, "invalid file type"
     return jsonify([flag, status])
 
 # ===========================================

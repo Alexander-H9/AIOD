@@ -25,7 +25,7 @@ async function uploadFile() {
             let flag = res[0];
             let status = res[1];
             console.log(flag, status)
-            if (flag == 0) {
+            if (flag == true) {
                 upload_span.style.color = "#32cd32";
                 upload_span.innerHTML = "<i class='fas fa-check'></i>"
                 result_span.innerHTML = status;

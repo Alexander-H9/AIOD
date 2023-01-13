@@ -23,7 +23,7 @@ async function loginAccount() {
             console.log(res);
             let flag = res[0];
             let status = res[1];
-            if (flag == 0) {
+            if (flag == true) {
                 login_span.style.color = "#32cd32";
                 login_span.innerHTML = "<i class='fas fa-check'></i>";
                 await new Promise(r => setTimeout(r, 1000));
