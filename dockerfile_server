@@ -39,6 +39,8 @@ RUN rm *.whl
 # FROM tensorflow/tensorflow:devel-gpu
 # FROM tensorflow/tensorflow:latest     
 # FROM elswork/rpi-tensorflow-py3
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update --allow-releaseinfo-change && apt install tesseract-ocr -y && rm -rf /var/lib/apt/lists/*
 
 # cv2 dependencies
 RUN apt-get update
@@ -50,8 +52,10 @@ RUN pip install --upgrade pip && pip install \
     paho-mqtt \
     pydantic \
     PyYAML \
-    matplotlib 
-    # opencv-python
+    matplotlib \
+		pytesseract \
+    imutils 
+    
 
 WORKDIR /app
 

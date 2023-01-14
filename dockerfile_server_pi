@@ -1,11 +1,18 @@
 FROM armindocachada/tensorflow2-opencv4-raspberrypi4:2.2_4.5.0
 
+ENV DEBIAN_FRONTEND=noninteractive
+
+# RUN apt update
+RUN apt-get update --allow-releaseinfo-change && apt install tesseract-ocr -y && rm -rf /var/lib/apt/lists/*
+
 RUN pip install --upgrade pip && pip install \
     paho-mqtt \
     pydantic \
     PyYAML \
     matplotlib \
-    keras 
+    keras \
+    pytesseract \
+    imutils 
 
 WORKDIR /app/server
 

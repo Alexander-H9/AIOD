@@ -23,7 +23,6 @@ def init_obj_det():
 
 
 def obj_det(model, media_t, port):
-    # TODO change img handling
 
     img_path = os.path.join('media', f'output_{port}.{media_t}')
 

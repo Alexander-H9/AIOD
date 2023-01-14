@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 # Folders
-media
+output*
 models
 data
 log

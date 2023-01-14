@@ -79,6 +79,7 @@ def upload_media():
     status = ""
 
     f = request.files["image"] 
+    # func = request.files["functionality"]
     byte_img = request.files["image"].read()
     f_name = f.filename
 
@@ -96,9 +97,8 @@ def upload_media():
             print("Could not connect to MQTT Broker!")
             sys.exit(-1)
         print("listen and publish with port: ", port)
-        status = start_connection(username, password, port, media_type, byte_img)
+        status = start_connection(username, password, port, media_type, byte_img, func)
         flag = True
-
     
     else:
         flag, status = False, "invalid file type"

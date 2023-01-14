@@ -44,20 +44,28 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     print(msg.topic+" "+msg.payload.decode('utf-8'))   # .decode('utf-8)
 
-    erg = msg.payload.decode('utf-8')
-    erg = erg.replace("[", "")
-    erg = erg.replace("]", "")
-    erg = erg.replace("(", "")
-    erg = erg.replace(")", "")
-    erg = erg.replace("'", "")
-    erg = erg.split(",")
+    # if obj_detection (parsing msg):
+    if msg.payload.decode('utf-8').startswith("["):
+        erg = msg.payload.decode('utf-8')
+        erg = erg.replace("[", "")
+        erg = erg.replace("]", "")
+        erg = erg.replace("(", "")
+        erg = erg.replace(")", "")
+        erg = erg.replace("'", "")
+        erg = erg.split(",")
 
-    obj = erg[1]
-    per = erg[2]
+        obj = erg[1]
+        per = erg[2]
+        print(f'Server respons: \nObject:    {obj} \nPercentage: {per}')
+        Connection.res = obj
 
-    print(f'Server respons: \nObject:    {obj} \nPercentage: {per}')
+    # if text recognition and other
+    else:
+        Connection.res = msg.payload.decode('utf-8')
 
-    Connection.res = f'Object: {obj} \nPercentage: {round(float(per), 2)}'
+    if msg.payload.decode('utf-8') == "":
+        Connection.res = "-"
+
     Connection.rec_flag = True
     
 
@@ -87,7 +95,7 @@ def start_connection(username, password, p, media_type, byte_img, ai_function="o
 
     timeout = 0
     while Connection.rec_flag == False:
-        if timeout >= 100.0: 
+        if timeout >= 250.0: 
             Connection.res = "timout for classification"
             break
             
