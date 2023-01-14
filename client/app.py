@@ -78,8 +78,7 @@ def upload_media():
     flag = False
     status = ""
 
-    f = request.files["image"] 
-    # func = request.files["functionality"]
+    f = request.files["image"]
     byte_img = request.files["image"].read()
     f_name = f.filename
 
