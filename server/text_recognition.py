@@ -53,7 +53,8 @@ def text_recognition(media_t, port):
                 if text and text.strip() != "":
                     img = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
                     img = cv2.putText(img, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 3)
-                    
+        
+    if text not in res.split(" "):            
         res += (" " + text)
         #cv2.imshow('img', img)
         #cv2.imwrite("img.png", img)
