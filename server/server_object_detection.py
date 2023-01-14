@@ -10,6 +10,7 @@ parent = os.path.dirname(current)
 sys.path.append(parent)
 
 from object_detection import obj_det, init_obj_det
+from text_recognition import text_recognition
 
 # this functions dont work with the installed tf version
 # from traffic_sign_detection import init_traffic_sign_det, traffic_sign_det # 
@@ -80,20 +81,19 @@ def on_message(client, userdata, msg):
 
     elif msg.topic == f'send_img/{port}/topic':
 
-        print(f'COMPUTING result for request by client {port}')
+
+        print(f'COMPUTING result for request by client {port}\nUsing {ai_function[port]}')
         receive(msg, media_type[port], port)
         
         if ai_function[port] == "object_detection":
-            
             res = obj_det(model, media_type[port], port)
 
-        elif ai_function[port] == "traffic_sign_detection":
-
-            # res = traffic_sign_det(model_traffic, media_type[port], port)
-            res = "this feature can not be used due to a incompatible tensorflow version"
+        elif ai_function[port] == "text_recognition":
+            res = text_recognition(media_type[port], port)
 
         print("PUBLISH ", res, " to port ", port)
         client.publish(f'rec_result/{port}/topic', str(res))
+
 
     elif msg.topic == f'disconnect/{port}/topic':
         connections.pop(port)

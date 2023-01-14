@@ -39,7 +39,8 @@ services:
   #     - 1881:1881
 
   #   networks:
-  #     - default_net
+  #     mqtt:
+  #       ipv4_address: 172.20.0.3
 
 
   flask_server:
