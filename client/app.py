@@ -107,8 +107,9 @@ def upload_media():
 # ===========================================
 @app.route("/account/logout", methods=["POST"])
 def account_logout():
+    app.is_logged_in = False
     start_connection(username, password, port, 0, 0)
-
+    return {}
 
 
 @app.errorhandler(404)

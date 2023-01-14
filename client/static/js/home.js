@@ -16,7 +16,7 @@ async function uploadFile() {
         formData.append("functionality", functionality);
         formData.append("image", img);
 
-        upload_span.innerHTML = '<img src="./static/loader2.gif" id="loading-gif" class="img-fluid" width="50"></img>';
+        upload_span.innerHTML = '<img src="./static/loader.gif" id="loading-gif" class="img-fluid" width="50"></img>';
         let response = await fetch("/media/upload", {method: "POST", body:formData});
         upload_span.innerHTML = "";
         if (response.status == 200) {
@@ -36,11 +36,16 @@ async function uploadFile() {
             upload_span.style.color = "#f50537"
             upload_span.textContent = "Error";
         }
-        await new Promise(r => setTimeout(r, 2000));
-        upload_span.innerHTML = "";
     } else {
         console.log("error")
         upload_span.style.color = "#f50537";
         upload_span.innerHTML = "<i class='fas fa-xmark'></i> No file selected!";
     }
+    await new Promise(r => setTimeout(r, 2000));
+    upload_span.innerHTML = "";
+}
+
+// On close or refresh
+window.onbeforeunload = async function(){
+    let response = await fetch("/account/logout", {method: "POST"});
 }
