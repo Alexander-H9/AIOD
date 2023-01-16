@@ -2,7 +2,7 @@
 
 from flask import Flask, render_template, Response, request, jsonify, redirect, url_for
 from waitress import serve
-import capture_img
+# import capture_img
 import os
 import sys
 

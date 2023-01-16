@@ -35,7 +35,10 @@
                             <div class="upload-icon"><i class="fas fa-file-arrow-up" id="upload-icon"></i></div>
                             <input type="file" accept=".jpg,.png,.bmp" name="file" id="upload-input">
                         </div> -->
-                        <input type="file" accept=".jpg,.png,.bmp" name="file" id="upload-input">
+                        <div class="drop-zone">
+                            <span class="drop-zone-prompt"><i class="fas fa-cloud-arrow-up"></i></span>
+                            <input type="file" accept=".jpg,.png,.bmp" name="myFile" class="drop-zone-input" id="upload-input">
+                        </div>
                         <div class="wrap-login100-form-btn">
                             <div class="login100-form-bgbtn"></div>
                             <button class="login100-form-btn" id="upload-btn" type="submit">
@@ -44,7 +47,7 @@
                         </div>
                     </div>
                     <div class="col mx-auto text-center">
-                        <span class="return-span" id="upload-span"></span>
+                        <span class="return-span" id="upload-span">X</span>
                     </div>
                     <div class="spacer20"></div>
                     <div class="wrap-input100">
