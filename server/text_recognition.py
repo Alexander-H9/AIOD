@@ -50,19 +50,12 @@ def text_recognition(media_t, port):
         for i in range(n_boxes):
             if int(d['conf'][i]) > 60:
                 (text, x, y, w, h) = (d['text'][i], d['left'][i], d['top'][i], d['width'][i], d['height'][i])
-                print("1")
-                print(text)
                 # don't show empty text
                 if text and text.strip() != "":
-                    print("2")
-                    print(text)
                     img = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
                     img = cv2.putText(img, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 3)
         
             if text not in res.split(" "):            
                 res += (" " + text)
-                #cv2.imshow('img', img)
-                #cv2.imwrite("img.png", img)
-                #cv2.waitKey(0)
-                # print(text)
+
     return(res)
