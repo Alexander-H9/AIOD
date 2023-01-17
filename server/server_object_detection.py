@@ -71,6 +71,7 @@ def on_message(client, userdata, msg):
         client.subscribe(f'disconnect/{new_port}/topic')
         client.publish(f'auth_succ/topic', new_port)
         media_type[new_port] = "None"
+        ai_function[new_port] = "object_detection"
         print("Authentication finished")
 
     elif msg.topic == f'function_topic/{port}/topic':
