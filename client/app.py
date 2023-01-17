@@ -57,15 +57,16 @@ def account_login():
     # connect client to broker
     global port
     print("start auth")
-    status, port = authenticate(client) 
+    flag, port = authenticate(client) 
 
     if port == -1: 
-        status = False
+        flag = False
         print("The server is not up")
+        status = "Server is down"
     print("status: ", status)
     print("port: ", port)
 
-    if status:
+    if flag:
         app.is_logged_in = True
 
     return jsonify([flag, status])
