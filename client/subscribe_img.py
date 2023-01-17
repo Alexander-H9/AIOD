@@ -99,7 +99,7 @@ def start_connection(username, password, p, media_type, byte_img, ai_function="o
             Connection.res = "timout for classification"
             break
             
-        time.sleep(0.1)
+        time.sleep(0.2)
         timeout += 1
 
     Connection.rec_flag = False
