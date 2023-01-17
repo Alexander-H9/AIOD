@@ -54,7 +54,6 @@ def account_login():
     
     # init client credentials
     client.username_pw_set(username=username, password=password)
-    flag = True
     # connect client to broker
     global port
     print("start auth")
@@ -66,7 +65,7 @@ def account_login():
     print("status: ", status)
     print("port: ", port)
 
-    if flag == True:
+    if status:
         app.is_logged_in = True
 
     return jsonify([flag, status])
