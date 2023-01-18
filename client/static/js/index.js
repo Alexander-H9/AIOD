@@ -14,10 +14,12 @@ async function loginAccount() {
     formData.append("password", password);
 
     if (username !== "" && password !== ""){
+        login_span.innerHTML = '<img src="./static/loader.gif" id="loading-gif" class="img-fluid" width="60"></img>';
         let response = await fetch("/account/login", {
             method: "POST",
             body:formData
         });
+        login_span.innerHTML = "X";
         if (response.status == 200) {
             let res = await response.json();
             console.log(res);
@@ -47,7 +49,8 @@ async function loginAccount() {
         alert("fatal error");
     }
     await new Promise(r => setTimeout(r, 2000));
-    login_span.textContent = "";
+    login_span.textContent = "X";
+    login_span.style.color = "transparent";
 }
 
 function showValidate(input) {

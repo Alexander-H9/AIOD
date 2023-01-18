@@ -174,8 +174,7 @@ iframe {
 }
 
 .txt {
-    padding-top: 5%;
-    padding-bottom: 20%;
+    padding-bottom: 5%;
 }
 
 .txt1 {
@@ -267,7 +266,6 @@ iframe {
     position: relative;
     border-bottom: 2px solid #5d6874;
     margin-bottom: 37px;
-    overflow: auto;
 }
 
 .input100 {
@@ -537,6 +535,10 @@ iframe {
     height: 35px;
     background: 0 0;
     padding: 0 5px
+}
+
+#result-div {
+    overflow: auto;
 }
 
 .return-span {
